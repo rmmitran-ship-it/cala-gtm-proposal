@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A GTM Proposal for Cala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brown:#2e2723;
+    --beige:#f6e8cd;
+    --beige-50:#fcf8f0;
+    --orange:#fb6f3f;
+    --yellow:#ffc234;
+    --blue:#30bfff;
+    --pink:#e1bee6;
+    --muted:#7a6e65;
+    --eyebrow:#b0a090;
+    --border:#e8dece;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--beige);
+    color:var(--brown);
+    font-family:"DM Sans", sans-serif;
+    font-size:15px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Lora", serif; font-weight:400; color:var(--brown); margin:0;}
+  a{color:var(--brown);}
+  p{margin:0 0 16px;}
+  ul,ol{margin:0 0 16px; padding-left:22px;}
+  li{margin-bottom:6px;}
+
+  /* ---------- Scroll progress bar ---------- */
+  #scroll-progress{
+    position:fixed; top:0; left:0; height:2px; width:0%;
+    background:var(--orange); z-index:1000; transition:width 0.05s linear;
+  }
+
+  /* ---------- Layout shell ---------- */
+  .shell{max-width:800px; margin:0 auto;}
+  .content{padding:64px 48px 120px;}
+
+  /* ---------- TOC panel (desktop, floating top-right) ---------- */
+  .toc-panel{
+    position:fixed; top:32px; right:32px; width:230px; z-index:500;
+    background:var(--beige-50); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px; max-height:calc(100vh - 64px); overflow-y:auto;
+  }
+  .toc-header{
+    display:flex; align-items:center; gap:10px; cursor:pointer;
+    background:none; border:none; padding:0; width:100%; text-align:left;
+    font-family:"DM Sans", sans-serif; font-size:14.5px; font-weight:500; color:var(--brown);
+  }
+  .toc-header .hamburger-icon{
+    display:flex; flex-direction:column; justify-content:center; gap:3px; flex-shrink:0;
+  }
+  .toc-header .hamburger-icon span{display:block; width:16px; height:1.5px; background:var(--brown);}
+  .toc-panel nav{margin-top:14px;}
+  .toc-panel.collapsed nav{display:none;}
+  .toc-panel nav ul{list-style:none; margin:0; padding:0;}
+  .toc-panel nav li{margin:0;}
+  .toc-panel nav a{
+    display:block; text-decoration:none; color:var(--muted);
+    font-size:14px; padding:6px 0; transition:color .15s;
+  }
+  .toc-panel nav a.divider-label{
+    text-transform:uppercase; font-size:10.5px; letter-spacing:.08em;
+    color:var(--eyebrow); margin-top:10px; font-weight:500; pointer-events:none;
+  }
+  .toc-panel nav a:hover{color:var(--brown);}
+  .toc-panel nav a.active{color:var(--brown); font-weight:600;}
+  @media (max-width:1023px){ .toc-panel{display:none;} }
+
+  /* ---------- Mobile top bar ---------- */
+  .topbar{
+    display:none; position:sticky; top:0; z-index:900; background:var(--beige-50);
+    border-bottom:1px solid var(--border); padding:14px 20px; align-items:center;
+    justify-content:space-between;
+  }
+  .topbar-title{font-family:"Lora", serif; font-size:16px;}
+  .hamburger{
+    width:32px; height:32px; border:none; background:none; cursor:pointer;
+    display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0;
+  }
+  .hamburger span{display:block; width:22px; height:2px; background:var(--brown);}
+  .drawer{
+    position:fixed; top:0; right:0; width:78%; max-width:300px; height:100%;
+    background:var(--beige-50); z-index:1001; transform:translateX(100%);
+    transition:transform .25s ease; padding:24px; overflow-y:auto;
+    border-left:1px solid var(--border);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-close{background:none; border:none; font-size:22px; cursor:pointer; color:var(--brown); margin-bottom:20px;}
+  .drawer nav a{
+    display:block; padding:10px 0; text-decoration:none; color:var(--brown); font-size:15px;
+    border-bottom:1px solid var(--border);
+  }
+  .drawer nav a.divider-label{
+    text-transform:uppercase; font-size:10.5px; letter-spacing:.08em; color:var(--eyebrow);
+    border-bottom:none; padding-bottom:0; padding-top:16px; font-weight:500;
+  }
+  .scrim{
+    position:fixed; inset:0; background:rgba(46,39,35,0.35); z-index:1000;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .scrim.open{opacity:1; pointer-events:auto;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding-bottom:40px; margin-bottom:12px;}
+  .eyebrow{
+    font-family:"DM Sans", sans-serif; font-size:11px; font-weight:500;
+    text-transform:uppercase; letter-spacing:0.1em; color:var(--eyebrow); margin-bottom:16px;
+  }
+  .hero h1{font-size:40px; line-height:1.2; font-weight:400; max-width:640px;}
+  .hero .underline-word{position:relative; display:inline-block;}
+  .hero .underline-word svg{
+    position:absolute; left:0; bottom:-6px; width:100%; height:14px; overflow:visible;
+  }
+  .hero .underline-word path{
+    stroke:var(--orange); stroke-width:3; fill:none; stroke-linecap:round;
+    stroke-dasharray:220; stroke-dashoffset:220;
+    animation:draw-underline 0.7s ease forwards;
+    animation-delay:0.9s;
+  }
+  @keyframes draw-underline{ to{ stroke-dashoffset:0; } }
+  .hero .lede{font-size:16px; color:var(--muted); max-width:560px; margin-top:20px;}
+
+  /* ---------- Strikethrough hero moment ---------- */
+  .strike-line{font-family:"Lora", serif; font-size:22px; line-height:1.5; margin:28px 0 8px;}
+  .strike-word{position:relative; display:inline-block;}
+  .strike-word svg{position:absolute; left:-2%; top:48%; width:104%; height:16px; overflow:visible;}
+  .strike-word path{
+    stroke:var(--orange); stroke-width:2.5; fill:none; stroke-linecap:round;
+    stroke-dasharray:140; stroke-dashoffset:140;
+    animation:draw-strike 0.6s ease forwards;
+    animation-delay:1.3s;
+  }
+  @keyframes draw-strike{ to{ stroke-dashoffset:0; } }
+
+  /* ---------- Section dividers ---------- */
+  .divider{display:flex; justify-content:center; margin:56px 0;}
+  .divider svg path{stroke:var(--brown); stroke-width:1.5; fill:none; opacity:0.15;}
+  .part-label{
+    text-align:center; font-family:"DM Sans", sans-serif; font-style:italic; font-size:12px;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--eyebrow); margin:8px 0 -20px;
+  }
+
+  /* ---------- Section structure ---------- */
+  section{padding-top:24px; scroll-margin-top:24px;}
+  section h2{font-size:26px; line-height:1.3; margin-bottom:20px;}
+  h3{font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; margin:28px 0 12px;}
+  .muted{color:var(--muted);}
+  u{text-decoration:none; border-bottom:2px solid var(--orange); font-weight:500;}
+
+  /* ---------- Callouts ---------- */
+  .callout{
+    background:var(--beige-50); border-left:2px solid var(--brown);
+    padding:18px 22px; margin:24px 0; font-family:"Lora", serif; font-style:italic;
+    font-size:16.5px; line-height:1.6;
+  }
+
+  /* ---------- Tables ---------- */
+  table{width:100%; border-collapse:collapse; margin:20px 0; font-size:14px;}
+  thead th{
+    text-align:left; font-size:11px; font-weight:500; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--muted); padding:8px 14px 10px 0; border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:12px 14px 12px 0; border-bottom:1px solid var(--border); vertical-align:top;}
+  tbody tr:hover td{background:rgba(246,232,205,0.35);}
+  tbody tr.tooltip-row td{background:transparent;}
+  .priority-lead{color:#3f7d4a; font-weight:500;}
+  .priority-build{color:#a6790e; font-weight:500;}
+  .priority-maintain{color:#2980b9; font-weight:500;}
+
+  /* severity dots */
+  .dot{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; vertical-align:middle; transition:transform .15s ease;}
+  .dot.critical{background:#c0392b;}
+  .dot.high{background:#d35400;}
+  .dot.medium{background:#2980b9;}
+  tr:hover .dot{transform:scale(1.5);}
+
+  /* segment hover tooltip rows */
+  .segment-row{cursor:default;}
+  .tooltip-row td{padding:0; border-bottom:1px solid var(--border);}
+  .tooltip-row .tooltip-inner{
+    max-height:0; overflow:hidden; transition:max-height .25s ease, padding .25s ease;
+    font-style:italic; font-family:"Lora", serif; color:var(--muted); font-size:14px;
+  }
+  .segment-row:hover + .tooltip-row .tooltip-inner{max-height:60px; padding:2px 0 14px;}
+
+  /* ---------- Cards ---------- */
+  .card-grid{display:grid; gap:1px; background:var(--border); margin:20px 0; border:1px solid var(--border); border-radius:4px; overflow:hidden;}
+  .card-grid.cols-2{grid-template-columns:1fr 1fr;}
+  .card-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:720px){ .card-grid.cols-2, .card-grid.cols-3{grid-template-columns:1fr;} }
+  .card{background:var(--beige-50); padding:20px;}
+  .card h4{font-family:"DM Sans"; font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:.04em; margin:0 0 10px;}
+  .card p:last-child{margin-bottom:0;}
+
+  /* ---------- 90-day checklist ---------- */
+  .phase-grid{display:grid; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:4px; overflow:hidden; margin:24px 0;}
+  .phase-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:820px){ .phase-grid.cols-3{grid-template-columns:1fr;} }
+  .phase{background:var(--beige-50); padding:20px;}
+  .phase-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
+  .phase-head h4{font-family:"DM Sans"; font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:.04em; margin:0;}
+  .phase-count{font-size:12px; color:var(--muted);}
+  .phase-objective{font-size:12.5px; color:var(--muted); font-style:italic; margin-bottom:14px;}
+  .progress-track{height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:16px;}
+  .progress-fill{height:100%; width:0%; background:var(--orange); transition:width .3s ease;}
+  .phase ul{list-style:none; padding:0; margin:0;}
+  .phase li{display:flex; align-items:flex-start; gap:9px; margin-bottom:10px; font-size:13.5px; line-height:1.5;}
+  .phase input[type=checkbox]{margin-top:3px; accent-color:var(--orange); cursor:pointer; flex-shrink:0;}
+  .phase label{cursor:pointer;}
+  .phase li.checked label{text-decoration:line-through; color:var(--muted);}
+
+  /* ---------- Financial toggle ---------- */
+  .toggle-row{display:flex; align-items:center; gap:12px; margin:24px 0 4px;}
+  .toggle-label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+  .toggle-switch{
+    display:inline-flex; border:1px solid var(--border); border-radius:20px; padding:3px; background:var(--beige-50);
+  }
+  .toggle-switch button{
+    border:none; background:none; padding:6px 16px; border-radius:16px; font-family:"DM Sans"; font-size:13px;
+    cursor:pointer; color:var(--muted); transition:all .2s ease;
+  }
+  .toggle-switch button.active{background:var(--orange); color:#fff;}
+  .fin-value{font-family:"Lora"; font-size:15px; font-weight:600;}
+
+  /* ---------- Territory cards ---------- */
+  .territory-card h4{color:var(--brown);}
+  .territory-card .stat{color:var(--orange); font-weight:600;}
+
+  /* ---------- Next step / signature ---------- */
+  .signature{margin-top:32px; padding-top:24px; border-top:1px solid var(--border);}
+  .signature .sig-name{font-family:"Lora"; font-size:17px; margin-bottom:2px;}
+  .signature a{color:var(--brown); text-decoration:underline;}
+
+  footer{text-align:center; font-size:12px; color:var(--eyebrow); padding:40px 0 20px;}
+
+  @media (max-width:1023px){
+    .topbar{display:flex;}
+    .content{padding:32px 20px 100px; max-width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<!-- Mobile top bar -->
+<div class="topbar">
+  <div class="topbar-title">Cala — GTM Proposal</div>
+  <button class="hamburger" id="hamburger-btn" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawer-close" aria-label="Close navigation">&times;</button>
+  <nav id="drawer-nav"></nav>
+</div>
+
+<div class="toc-panel" id="toc-panel">
+  <button class="toc-header" id="toc-toggle" aria-label="Toggle table of contents">
+    <span class="hamburger-icon"><span></span><span></span><span></span></span>
+    On this page
+  </button>
+  <nav id="sidebar-nav">
+    <ul>
+      <li><a href="#overview" data-nav>Overview</a></li>
+      <li><a href="#proposition" data-nav>The Proposition</a></li>
+      <li><a class="divider-label">Part 1 — Diagnosis</a></li>
+      <li><a href="#market" data-nav>Market Landscape</a></li>
+      <li><a href="#constraints" data-nav>GTM Constraints</a></li>
+      <li><a class="divider-label">Part 2 — Design</a></li>
+      <li><a href="#segments" data-nav>Segment Priority</a></li>
+      <li><a href="#direct" data-nav>Direct Motion</a></li>
+      <li><a href="#partner" data-nav>Partner Motion</a></li>
+      <li><a href="#plan" data-nav>90-Day Plan</a></li>
+      <li><a href="#about" data-nav>About</a></li>
+      <li><a href="#next" data-nav>Next Step</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="shell">
+  <main class="content">
+
+    <div class="hero">
+      <div class="eyebrow">GTM Proposal — Prepared for Cala.ai</div>
+      <h1>Cala doesn't need more doors open. It needs the right <span class="underline-word">sequencing<svg viewBox="0 0 220 14"><path d="M2,8 C40,2 90,12 130,6 C160,2 195,10 218,5"/></svg></span>.</h1>
+      <p class="lede">A diagnostic of where Cala stands, a framework for prioritising where to compete, and a two-track growth motion a lean team can actually execute.</p>
+    </div>
+
+    <!-- ===================== OVERVIEW ===================== -->
+    <section id="overview">
+      <h2>Overview</h2>
+
+      <p class="strike-line">The product works. The challenge is <span class="strike-word">clarity<svg viewBox="0 0 90 16"><path d="M3,8 L86,8"/></svg></span>.</p>
+
+      <p>Cala has built something genuinely rare: a verified, structured knowledge layer for AI agents that solves a problem most teams don't even know they have until they're knee-deep in brittle data pipelines and hallucinating outputs.</p>
+
+      <p>There is early traction — particularly in financial services and with developer teams building agentic products. The co-design model is producing real proof points.</p>
+
+      <p>With five industries, three buyer tiers, and a one-person GTM team, Cala is at the inflection point every Series A company reaches: the moment where doing everything means winning nothing. The window to own a category is open. But category ownership requires a decision — which door to walk through first, and how to build the engine that takes you through it.</p>
+
+      <p>This proposal offers a diagnostic of where Cala stands, a framework for prioritising where to compete, and a practical two-track growth motion — direct and partner — that a lean team can execute without burning runway on the wrong buyers.</p>
+
+      <div class="callout">It is written not to impress, but to be useful.</div>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== THE PROPOSITION ===================== -->
+    <section id="proposition">
+      <h2>The Proposition</h2>
+      <h3>What Cala Has Built — and Why It Matters Now</h3>
+
+      <p>The AI agent market is not short of tools. It is short of reliable inputs.</p>
+
+      <p>Most agent builders face the same invisible problem: their agents are only as good as the data they reason over. Web search returns noise. Scraped HTML breaks constantly. Internal RAG systems hallucinate on gaps. The developer spends 60% of their time not building the agent — but cleaning, validating, and patching the data pipeline underneath it.</p>
+
+      <p>Cala removes that problem entirely.</p>
+
+      <p>A verified entity graph — companies, people, laws, filings, market data, court records — pre-structured, source-traced, and queryable by natural language or dot-notation. An agent built on Cala doesn't hunt. It asks, and gets a typed, clean, citable answer.</p>
+
+      <h3>Two USPs Worth Owning — Precisely Framed</h3>
+
+      <div class="card-grid cols-2">
+        <div class="card">
+          <h4>Efficiency</h4>
+          <p>The surface-level win. Fewer tokens consumed, less parsing overhead, faster agent outputs. This is measurable, demonstrable, and resonates immediately with CTOs managing infrastructure costs.</p>
+        </div>
+        <div class="card">
+          <h4>Semantic Precision</h4>
+          <p>The deeper, more defensible advantage. Agents that reason over structured meaning — not scraped text — build better outputs, make fewer errors, and can be trusted in regulated environments. Agents don't just run faster. They reason better.</p>
+        </div>
+      </div>
+
+      <div class="callout">Together, these two positions occupy a lane no one else owns cleanly: the knowledge infrastructure layer for agents that need to be right, not just fast.</div>
+    </section>
+
+    <div class="part-label">Part 1 — Strategic Pipeline Diagnosis</div>
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== MARKET LANDSCAPE ===================== -->
+    <section id="market">
+      <h2>Market Landscape</h2>
+
+      <h3>The Real Challenge: Signal Everywhere, Clarity Nowhere</h3>
+      <table>
+        <thead><tr><th>What Is Working</th><th>What Is At Risk</th></tr></thead>
+        <tbody>
+          <tr><td>Traction with developer and startup teams</td><td>Three buyer tiers pulling GTM in different directions</td></tr>
+          <tr><td>Co-design model producing live fintech proof points</td><td>No repeatable sales motion yet</td></tr>
+          <tr><td>Five industry verticals already mapped</td><td>Messaging too broad to land with any one buyer</td></tr>
+          <tr><td>MCP integrations (Claude, Cursor, n8n) live</td><td>One GTM person cannot activate all of this simultaneously</td></tr>
+          <tr><td>Open door with enterprise CTOs</td><td>Long enterprise cycles with no case study infrastructure yet</td></tr>
+          <tr><td>Community-friendly product (solo builders, indie devs)</td><td>Community GTM requires consistent investment to compound</td></tr>
+        </tbody>
+      </table>
+
+      <p>The core tension is not a product problem. It is a <strong>sequencing problem.</strong></p>
+
+      <p>At Series A, with a lean team, trying to win Finance + Healthcare + Legal + HR + Agro across Enterprise + Developers + Solo Builders simultaneously is not ambition — it is dilution. The companies that win categories at this stage are the ones that pick a beachhead, dominate it, and use that proof to expand.</p>
+
+      <div class="callout">The diagnostic question is not "where could Cala play?" It is "where should Cala win first?"</div>
+
+      <h3>Region &times; Industry Growth &amp; Competition Map</h3>
+      <table>
+        <thead><tr><th>Region</th><th>Financial Services</th><th>Healthcare</th><th>Legal</th><th>HR</th><th>Agro</th></tr></thead>
+        <tbody>
+          <tr><td><strong>UK</strong></td><td>High growth, moderate competition, strong regulatory pull</td><td>Emerging</td><td>Niche</td><td>Low</td><td>Low</td></tr>
+          <tr><td><strong>US</strong></td><td>High growth, high competition, high ACV</td><td>High growth</td><td>High growth</td><td>Medium</td><td>Low</td></tr>
+          <tr><td><strong>Spain / Southern EU</strong></td><td>Medium growth, low competition, home advantage</td><td>Low</td><td>Low</td><td>Low</td><td>Agro opportunity</td></tr>
+          <tr><td><strong>DACH / Nordics</strong></td><td>High growth, low competition, compliance-driven</td><td>Medium</td><td>Medium</td><td>Medium</td><td>Low</td></tr>
+          <tr><td><strong>LATAM</strong></td><td>Early stage, low competition, low ACV</td><td>Low</td><td>Low</td><td>Low</td><td>Medium</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Reading the map:</strong> Financial services is the highest-signal vertical across all regions. The US market is the largest but the most competitive and most expensive to enter without a partner. Spain is an underrated asset — home ground advantage, lower CAC, and a growing startup ecosystem. DACH and Nordics are the highest-upside expansion markets: compliance cultures that value verified data, strong fintech ecosystems, and less entrenched competition than the US.</p>
+
+      <h3>Where Competition Is Playing</h3>
+      <table>
+        <thead><tr><th>Player</th><th>Angle</th><th>Where They're Strong</th><th>Cala's Gap vs. Them</th></tr></thead>
+        <tbody>
+          <tr><td>Linkup</td><td>Real-time web search for agents</td><td>Broad, horizontal</td><td>Cala wins on structure and verification</td></tr>
+          <tr><td>Glean</td><td>Internal enterprise knowledge</td><td>Large enterprise, M365 shops</td><td>Different lane — internal vs. world knowledge</td></tr>
+          <tr><td>Google Vertex AI</td><td>Grounding via search + knowledge graph</td><td>Hyperscaler customers</td><td>Cala wins on specialisation and independence</td></tr>
+          <tr><td>Perplexity API</td><td>Web search, fast answers</td><td>Developer adoption</td><td>Cala wins on data quality and traceability</td></tr>
+          <tr><td>Zep / Mem0</td><td>Agent memory, private data</td><td>Technical builders</td><td>Different lane — memory vs. world knowledge</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">White space: no one owns verified, structured, public world knowledge for AI agents as a clear category. Cala can name and own that lane — but only if it moves before a hyperscaler decides to.</div>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== GTM CONSTRAINTS ===================== -->
+    <section id="constraints">
+      <h2>GTM Constraints</h2>
+      <h3>Root Causes &amp; Severity</h3>
+
+      <table>
+        <thead><tr><th>Constraint</th><th>Root Cause</th><th>Severity</th><th>Time Horizon</th></tr></thead>
+        <tbody>
+          <tr><td>ICP not defined</td><td>Three buyer tiers with different needs, no prioritisation decision made</td><td><span class="dot critical"></span>Critical</td><td>Blocking now</td></tr>
+          <tr><td>Messaging too broad</td><td>Product solves different problems for different buyers; no single narrative</td><td><span class="dot critical"></span>Critical</td><td>Blocking now</td></tr>
+          <tr><td>One GTM person</td><td>Early stage resourcing; right for now but limits parallel execution</td><td><span class="dot high"></span>High</td><td>30–60 days</td></tr>
+          <tr><td>No repeatable sales motion</td><td>Co-design is working but not yet systematised into a playbook</td><td><span class="dot high"></span>High</td><td>60–90 days</td></tr>
+          <tr><td>No partner infrastructure</td><td>No commercial framework, no enablement kit, no territory model</td><td><span class="dot high"></span>High</td><td>60–90 days</td></tr>
+          <tr><td>Limited case study assets</td><td>One fintech co-design in progress; nothing published yet</td><td><span class="dot medium"></span>Medium</td><td>30–60 days</td></tr>
+          <tr><td>Developer community presence</td><td>MCP integrations live but no active community motion</td><td><span class="dot medium"></span>Medium</td><td>60–90 days</td></tr>
+          <tr><td>US market entry</td><td>High cost, high competition; needs proof point and partner before entering</td><td><span class="dot medium"></span>Medium</td><td>90–180 days</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">The two things that unlock everything else: defining the ICP and fixing the messaging. Every other constraint becomes easier once those two decisions are made. Without them, every GTM motion leaks.</div>
+    </section>
+
+    <div class="part-label">Part 2 — Pipeline Design &amp; Growth Motion</div>
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== SEGMENT PRIORITY ===================== -->
+    <section id="segments">
+      <h2>Segment Priority</h2>
+      <p>Which door to walk through first — the recommended sequencing:</p>
+
+      <div class="card-grid cols-3">
+        <div class="card">
+          <h4>Lead With</h4>
+          <p><strong>Developers &amp; startups building in Financial Services.</strong> This is where signal already exists, where the co-design model has traction, and where the USPs translate most directly into measurable value.</p>
+        </div>
+        <div class="card">
+          <h4>Build Alongside</h4>
+          <p><strong>Enterprise CTOs in Financial Services</strong> (UK and Spain first). The co-design proof point from the developer motion becomes the enterprise sales tool — partner-assisted, longer timeline.</p>
+        </div>
+        <div class="card">
+          <h4>Maintain, Don't Invest</h4>
+          <p><strong>Solo Builders.</strong> Valuable for goodwill and community signal, but low ACV and high support cost. Keep the free tier alive — don't put GTM resources here in the first 90 days.</p>
+        </div>
+      </div>
+
+      <h3>Segment Prioritisation Rationale</h3>
+      <p class="muted" style="font-size:12.5px;">Hover a row for context.</p>
+      <table>
+        <thead><tr><th>Criteria</th><th>Dev / Startup (FinServ)</th><th>Enterprise CTO (FinServ)</th><th>Solo Builders</th></tr></thead>
+        <tbody>
+          <tr class="segment-row"><td>Sector attractiveness</td><td>High</td><td>High</td><td>Medium</td></tr>
+          <tr class="tooltip-row"><td colspan="4"><div class="tooltip-inner">This is where traction already exists. Win here first.</div></td></tr>
+
+          <tr class="segment-row"><td>Account size &amp; rev potential</td><td>Medium (€5–20k ACV)</td><td>High (€50–150k ACV)</td><td>Low (&lt;€1k)</td></tr>
+          <tr class="tooltip-row"><td colspan="4"><div class="tooltip-inner">Long cycle. Use developer case studies as the entry point.</div></td></tr>
+
+          <tr class="segment-row"><td>Win feasibility (next 90 days)</td><td>High — traction exists</td><td>Medium — long cycle</td><td>High — low friction</td></tr>
+          <tr class="tooltip-row"><td colspan="4"><div class="tooltip-inner">Maintain the free tier. Don't invest GTM resources here in 90 days.</div></td></tr>
+
+          <tr><td><strong>Priority</strong></td><td class="priority-lead">Lead</td><td class="priority-build">Build toward</td><td class="priority-maintain">Maintain</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== DIRECT MOTION ===================== -->
+    <section id="direct">
+      <h2>Direct Motion</h2>
+
+      <h3>Always-On Digital Awareness</h3>
+      <p>The goal of the always-on track is not leads. It is <em>category education.</em> Buyers who don't yet know they have a data quality problem need to find Cala before they know to look for it.</p>
+
+      <h3>Three Commercial Message Pillars</h3>
+      <div class="card-grid cols-3">
+        <div class="card">
+          <h4>Efficiency &amp; Reliability</h4>
+          <p>"Your agent is only as good as what it knows." Targets CTOs and technical founders who feel the pain of brittle data pipelines.</p>
+        </div>
+        <div class="card">
+          <h4>Build vs. Buy</h4>
+          <p>"Stop building the data layer. Start building the product." Targets developers spending time on ingestion instead of the actual agent.</p>
+        </div>
+        <div class="card">
+          <h4>Trust &amp; Compliance</h4>
+          <p>"Verified facts. Not scraped guesses." Targets regulated industries where hallucination is a liability, not just an annoyance.</p>
+        </div>
+      </div>
+
+      <h3>Landing Pages Per ICP</h3>
+      <ul>
+        <li><strong>/finance</strong> — KYC, sanctions, filings, compliance agents. Already exists (good). Needs sharper headline.</li>
+        <li><strong>/developers</strong> — Token efficiency, MCP integration, docs-first experience. Does not yet exist as a distinct page.</li>
+        <li><strong>/enterprise</strong> — Governance, traceability, co-design model. Does not yet exist.</li>
+      </ul>
+
+      <h3>Developer Hooks (Always-On, Low Cost)</h3>
+      <ul>
+        <li>Publish in LangChain, LlamaIndex, and n8n community channels</li>
+        <li>"Build with Cala" tutorial content — one use case per vertical, written for the developer, not the buyer</li>
+        <li>MCP integration visibility — make Cala the default recommended knowledge layer in Claude and Cursor communities</li>
+        <li>GitHub presence — open examples, quick-start repos, low friction to first API call</li>
+      </ul>
+
+      <h3>High-Touch Precision</h3>
+      <div class="card-grid cols-2">
+        <div class="card">
+          <h4>1:1 — Top Accounts</h4>
+          <p><strong>Target:</strong> 5–10 financial services firms actively building AI agents.<br><strong>Approach:</strong> lead with the problem, not the product.<br><strong>Offer:</strong> co-design engagement.<br><strong>Output:</strong> a live case study and a paying client.</p>
+        </div>
+        <div class="card">
+          <h4>1:Few — Events &amp; Roundtables</h4>
+          <p>Target developer meetups in London and Madrid. Host a roundtable: "The AI Agent Data Problem — Why Your Pipeline Is Lying to You." Partner with fintech accelerators (Wayra, Anthemis, Level39).</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== PARTNER MOTION ===================== -->
+    <section id="partner">
+      <h2>Partner Motion</h2>
+
+      <p>Partners are not a distribution channel. They are a force multiplier on a GTM motion Cala has already chosen. Cala cannot hire its way into enterprise accounts at Series A. But partners already have the trust, the relationships, and the vertical expertise.</p>
+
+      <h3>Three-Way Value Framing</h3>
+      <table>
+        <thead><tr><th>Party</th><th>What They Get</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cala</strong></td><td>Accelerated market penetration without headcount; credibility transfer from established partners; geographic reach; co-design cases become repeatable playbooks</td></tr>
+          <tr><td><strong>The Partner</strong></td><td>Differentiates their AI offering; new revenue stream via resell margin; stickier client relationships; first-mover advantage before competitors embed Cala</td></tr>
+          <tr><td><strong>The End Client</strong></td><td>Battle-tested solution, not a pilot; reduced implementation risk; single commercial relationship; faster time to value</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The Partner Commercial Package</h3>
+      <ul>
+        <li>Co-branded vertical use case materials</li>
+        <li>Sales enablement kit: how to pitch Cala to clients, objection handling, demo assets</li>
+        <li>Dedicated partner support tier</li>
+        <li>Revenue share structure: 20–30% of ACV on referred and resold contracts</li>
+        <li>Co-design credits for first client deployment (reduces partner risk on first deal)</li>
+      </ul>
+
+      <h3>Financial Model — The Logic</h3>
+      <p class="muted" style="font-size:12.5px;">Figures are illustrative — designed to show the compounding logic of a partner channel, not to predict exact revenue.</p>
+
+      <table>
+        <thead><tr><th>Tier</th><th>Number of Partners</th><th>Avg. Deployments/Yr</th><th>Avg. ACV</th></tr></thead>
+        <tbody>
+          <tr><td>Strategic (large SIs, fintechs)</td><td>2–3</td><td>3–5 clients</td><td>€25–50k</td></tr>
+          <tr><td>Growth (mid-size AI agencies)</td><td>5–10</td><td>2–3 clients</td><td>€10–25k</td></tr>
+          <tr><td>Developer (boutique agencies)</td><td>20–30</td><td>1–2 clients</td><td>€5–10k</td></tr>
+        </tbody>
+      </table>
+
+      <div class="toggle-row">
+        <span class="toggle-label">Year 1 Partner Revenue</span>
+        <div class="toggle-switch" id="fin-toggle">
+          <button data-mode="conservative" class="active">Conservative</button>
+          <button data-mode="optimistic">Optimistic</button>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>Segment</th><th>Contribution</th></tr></thead>
+        <tbody>
+          <tr><td>2 strategic partners</td><td><span class="fin-value" data-low="300" data-high="500">€300k</span></td></tr>
+          <tr><td>7 growth partners</td><td><span class="fin-value" data-low="280" data-high="525">€280k</span></td></tr>
+          <tr><td>25 developer partners</td><td><span class="fin-value" data-low="250" data-high="500">€250k</span></td></tr>
+          <tr><td><strong>Total partner channel</strong></td><td><strong class="fin-value" data-low="830" data-high="1500">€830k</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">If Cala's Year 1 ARR target is €3–5M, the partner channel contributes 17–50% of revenue — at significantly lower CAC than direct enterprise sales.</div>
+
+      <h3>Territory Penetration Model</h3>
+      <div class="card-grid cols-2">
+        <div class="card territory-card">
+          <h4>UK — Financial Services</h4>
+          <p>~2,000 regulated firms → ~400 AI-active (20%) → ~80 with a live data problem. Via 2 UK fintech partners, 15% conversion: <span class="stat">12 clients in Year 1</span> — 3% of the addressable base.</p>
+        </div>
+        <div class="card territory-card">
+          <h4>Spain — FinServ + Agro</h4>
+          <p>Home market advantage, lower CAC, less competition. 2 Spanish partners (fintech + agro): <span class="stat">6–8 clients in Year 1</span>. Strategic value: first published case studies, proof point for US expansion.</p>
+        </div>
+        <div class="card territory-card">
+          <h4>US — Financial Services</h4>
+          <p>Largest TAM, highest competition and ACV. Do not enter direct in Year 1 without a strategic partner already in market: <span class="stat">2–3 enterprise clients via partner</span>, beachhead not volume.</p>
+        </div>
+        <div class="card territory-card">
+          <h4>DACH / Nordics — Year 2</h4>
+          <p>High compliance culture, strong fit for the verified data angle, low competition from specialists. Target: 1 regional partner in Month 10–12 as Year 2 setup.</p>
+        </div>
+      </div>
+
+      <h3>How the Two Tracks Reinforce Each Other</h3>
+      <ul>
+        <li>Direct motion builds brand and inbound — developers find Cala, use it, talk about it</li>
+        <li>Partner motion accelerates enterprise conversion — partners bring credibility into accounts Cala can't cold-open</li>
+        <li>Co-design cases feed both tracks — a fintech case study is a developer tutorial AND an enterprise sales asset AND a partner enablement tool</li>
+        <li>Developer adoption creates pull for enterprise — when the CTO's engineering team is already using Cala, the enterprise sale becomes an expansion, not an acquisition</li>
+      </ul>
+      <div class="callout">Two engines running in parallel, each making the other more efficient over time.</div>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== 90-DAY PLAN ===================== -->
+    <section id="plan">
+      <h2>90-Day Plan</h2>
+
+      <div class="phase-grid cols-3">
+        <div class="phase" data-phase="1">
+          <div class="phase-head"><h4>Days 1–30</h4><span class="phase-count">0 / 6 complete</span></div>
+          <div class="phase-objective">Foundation — make decisions and build the minimum assets to execute</div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+          <ul>
+            <li><input type="checkbox" id="p1-0"><label for="p1-0">Define the ICP — commit to one lead segment (dev/startup in FinServ)</label></li>
+            <li><input type="checkbox" id="p1-1"><label for="p1-1">Rewrite the core commercial message around the two USPs</label></li>
+            <li><input type="checkbox" id="p1-2"><label for="p1-2">Audit and sharpen existing landing pages; brief /developers and /enterprise</label></li>
+            <li><input type="checkbox" id="p1-3"><label for="p1-3">Document the co-design model as a repeatable framework</label></li>
+            <li><input type="checkbox" id="p1-4"><label for="p1-4">Identify 5–10 target accounts for 1:1 outreach in UK FinServ</label></li>
+            <li><input type="checkbox" id="p1-5"><label for="p1-5">Map 3–5 potential strategic partners in UK and Spain</label></li>
+          </ul>
+        </div>
+        <div class="phase" data-phase="2">
+          <div class="phase-head"><h4>Days 31–60</h4><span class="phase-count">0 / 6 complete</span></div>
+          <div class="phase-objective">Traction — generate signal and first partner conversations</div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+          <ul>
+            <li><input type="checkbox" id="p2-0"><label for="p2-0">Publish first fintech co-design case study (even if anonymised)</label></li>
+            <li><input type="checkbox" id="p2-1"><label for="p2-1">Launch developer content track: 2 tutorials for LangChain / n8n</label></li>
+            <li><input type="checkbox" id="p2-2"><label for="p2-2">Begin 1:1 outreach to 10 target accounts</label></li>
+            <li><input type="checkbox" id="p2-3"><label for="p2-3">Open conversations with 3 potential partners</label></li>
+            <li><input type="checkbox" id="p2-4"><label for="p2-4">Attend or speak at 1 developer/fintech event in London or Madrid</label></li>
+            <li><input type="checkbox" id="p2-5"><label for="p2-5">Set up basic always-on digital presence and content cadence</label></li>
+          </ul>
+        </div>
+        <div class="phase" data-phase="3">
+          <div class="phase-head"><h4>Days 61–90</h4><span class="phase-count">0 / 6 complete</span></div>
+          <div class="phase-objective">Expand — convert first signals into pipeline and first partner agreement</div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+          <ul>
+            <li><input type="checkbox" id="p3-0"><label for="p3-0">Close first 2–3 direct developer/startup clients via co-design</label></li>
+            <li><input type="checkbox" id="p3-1"><label for="p3-1">Sign first partner agreement (even a letter of intent)</label></li>
+            <li><input type="checkbox" id="p3-2"><label for="p3-2">Begin enterprise outreach using fintech case study as proof point</label></li>
+            <li><input type="checkbox" id="p3-3"><label for="p3-3">Launch /developers landing page</label></li>
+            <li><input type="checkbox" id="p3-4"><label for="p3-4">First roundtable or 1:few event with 10–15 target accounts</label></li>
+            <li><input type="checkbox" id="p3-5"><label for="p3-5">Review ICP hypothesis against market response — adjust if needed</label></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>What This Requires to Execute</h3>
+      <table>
+        <thead><tr><th>Resource</th><th>Current State</th><th>What's Needed</th></tr></thead>
+        <tbody>
+          <tr><td>GTM lead (strategy)</td><td>1 person, ex-McKinsey</td><td>Strong — keep focused on ICP decision and sales motion</td></tr>
+          <tr><td>Product marketing / execution</td><td>Gap</td><td>1 person who can run direct motion AND build partner infrastructure</td></tr>
+          <tr><td>Developer relations</td><td>Gap</td><td>Dedicated hire or contracted community builder</td></tr>
+          <tr><td>Case study assets</td><td>1 in progress</td><td>2–3 published within 90 days</td></tr>
+          <tr><td>Partner commercial framework</td><td>Does not exist</td><td>Build as part of 90-day plan</td></tr>
+          <tr><td>ICP decision</td><td>Not made</td><td>Founders need to make this call — everything else follows</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">GTM clarity is a leadership decision, not a marketing one. The ICP, the pricing model, the co-design terms — these need to be decided and committed to. A GTM team, however talented, cannot execute against an undefined target.</div>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section id="about">
+      <h2>Who Wrote This</h2>
+
+      <p>I started selling cider door to door in Amsterdam. A year later I was closing luxury hotels. That gap between a cold door and a signed contract is something I've been thinking about ever since.</p>
+
+      <p>I joined Qelp as a BDR when it was still small. Stayed through two M&amp;A events, each time rebuilding the GTM motion inside a new org. That's where I learned that strategy without execution is decoration.</p>
+
+      <p>Today I define GTM for Foundever's service solutions across manufacturing, financial services and telco. I've influenced over <u>€400M in pipeline</u>, built a growth function from <u>1 to 7 people</u>, and most recently activated <u>ElevenLabs as a strategic partner</u>, co-designing the joint GTM from scratch.</p>
+
+      <p>In parallel I led a food magazine in Barcelona. EU grant, team of 6 built in 6 weeks, 1,500 people reached. I mention it because it taught me how to build from nothing with no budget and no playbook.</p>
+
+      <p>BA from Hotelschool The Hague. MA in Strategic Design in Complexity from ELISAVA. The second one matters here: it's training in making good decisions when the system is too complex to fully understand. Which is exactly where Cala is right now.</p>
+    </section>
+
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== NEXT STEP ===================== -->
+    <section id="next">
+      <h2>Next Step</h2>
+
+      <p>This proposal is not a plan. It is a starting point for a conversation.</p>
+
+      <p>The thinking here is grounded in what I observed and heard — but the people closest to the product, the early customers, and the data will always know more than an outside perspective can.</p>
+
+      <p>What I'd welcome is a working session: take any one section of this, pressure-test it against what Cala is actually seeing, and see whether the thinking holds or needs to be reshaped.</p>
+
+      <p>I'm not here to tell a team with strong strategic thinking what their strategy should be. I'm here to help build and execute it — across the direct motion, the partner track, or both.</p>
+
+      <p>If that's useful, I'm one email away.</p>
+
+      <div class="signature">
+        <div class="sig-name">Raluca Mitran</div>
+        <div><a href="mailto:rm.mitran@gmail.com">rm.mitran@gmail.com</a></div>
+        <div><a href="https://www.linkedin.com/in/raluca-mitran/" target="_blank" rel="noopener">linkedin.com/in/raluca-mitran</a></div>
+      </div>
+    </section>
+
+    <footer>Prepared July 2026. Based on publicly available information about Cala and the AI agent infrastructure market, and conversations at Cala's office event, July 2026.</footer>
+
+  </main>
+</div>
+
+<script>
+  // Scroll progress bar
+  const progressBar = document.getElementById('scroll-progress');
+  function updateProgress(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // TOC panel collapse toggle
+  const tocPanel = document.getElementById('toc-panel');
+  document.getElementById('toc-toggle').addEventListener('click', () => {
+    tocPanel.classList.toggle('collapsed');
+  });
+
+  // Build mobile drawer nav from sidebar nav
+  const drawerNav = document.getElementById('drawer-nav');
+  drawerNav.innerHTML = document.getElementById('sidebar-nav').innerHTML.replace(/<ul>|<\/ul>|<li>|<\/li>/g, '');
+
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const drawerClose = document.getElementById('drawer-close');
+  const drawer = document.getElementById('drawer');
+  const scrim = document.getElementById('scrim');
+  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('open'); }
+  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('open'); }
+  hamburgerBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+  drawerNav.addEventListener('click', (e)=>{ if(e.target.tagName==='A' && e.target.hasAttribute('href')) closeDrawer(); });
+
+  // Active nav highlight — tracks the section whose top has most recently
+  // crossed the marker line, so it clears/updates correctly even on instant jumps
+  const navLinks = document.querySelectorAll('a[data-nav]');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const setActive = (id) => {
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  };
+  function updateActiveSection(){
+    const markerLine = window.innerHeight * 0.3;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= markerLine) current = s;
+    }
+    setActive(current.id);
+  }
+  window.addEventListener('scroll', updateActiveSection, {passive:true});
+  updateActiveSection();
+
+  // 90-day checklist with localStorage
+  document.querySelectorAll('.phase').forEach(phase => {
+    const checkboxes = phase.querySelectorAll('input[type=checkbox]');
+    const fill = phase.querySelector('.progress-fill');
+    const count = phase.querySelector('.phase-count');
+    const total = checkboxes.length;
+
+    function refresh(){
+      let checked = 0;
+      checkboxes.forEach(cb => {
+        const li = cb.closest('li');
+        li.classList.toggle('checked', cb.checked);
+        if (cb.checked) checked++;
+      });
+      fill.style.width = (checked/total*100) + '%';
+      count.textContent = checked + ' / ' + total + ' complete';
+    }
+
+    checkboxes.forEach(cb => {
+      const saved = localStorage.getItem('cala-90day-' + cb.id);
+      if (saved === 'true') cb.checked = true;
+      cb.addEventListener('change', () => {
+        localStorage.setItem('cala-90day-' + cb.id, cb.checked);
+        refresh();
+      });
+    });
+    refresh();
+  });
+
+  // Financial model toggle with counter animation
+  const finButtons = document.querySelectorAll('#fin-toggle button');
+  const finValues = document.querySelectorAll('.fin-value');
+  let currentMode = 'conservative';
+
+  function animateValue(el, from, to, duration){
+    const start = performance.now();
+    function tick(now){
+      const progress = Math.min((now - start) / duration, 1);
+      const value = Math.round(from + (to - from) * progress);
+      el.textContent = '€' + value + 'k';
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  finButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      if (mode === currentMode) return;
+      currentMode = mode;
+      finButtons.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+      finValues.forEach(el => {
+        const from = parseInt(el.dataset[mode === 'optimistic' ? 'low' : 'high']);
+        const to = parseInt(el.dataset[mode === 'optimistic' ? 'high' : 'low']);
+        animateValue(el, from, to, 400);
+      });
+    });
+  });
+</script>
+</body>
+</html>
