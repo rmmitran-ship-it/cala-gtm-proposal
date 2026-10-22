@@ -555,6 +555,57 @@
   .cta-chat:hover{background:#000; transform:rotate(0) scale(1.03);}
   .cta-chat:focus-visible{outline:2px solid var(--brown); outline-offset:4px;}
   .cta-chat-sub{font-size:13px; color:var(--muted); margin-top:10px;}
+  /* ---------- Pipeline on phones: stacked stages ---------- */
+  .pm{display:none;}
+  @media (max-width:820px){
+    .pipe{width:auto; margin:22px 0 10px;}
+    .pipe-scroll, .pipe-hint, .pipe-detail{display:none !important;}
+    .pm{display:block;}
+  }
+  .pm-stage{
+    background:color-mix(in srgb, var(--wash) 16%, #fcf8f0); border:2px solid var(--brown);
+    border-radius:255px 14px 225px 16px / 16px 225px 14px 255px; padding:20px 18px 18px;
+  }
+  .pm-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .pm-name{font-family:"Lora", serif; font-size:21px;}
+  .pm-frame{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .pm-q{font-family:"Lora", serif; font-style:italic; font-size:15.5px; line-height:1.45; margin:6px 0 16px;}
+  .pm-nodes{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px 8px;}
+  .pm-node{
+    display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:none; padding:4px 2px;
+    cursor:pointer; font-family:"DM Sans", sans-serif; font-size:12.5px; line-height:1.25; color:var(--brown); text-align:center;
+  }
+  .pm-node svg{width:54px; height:54px; padding:8px; background:#fffdf8; border:2px solid var(--brown); border-radius:50%; overflow:visible; transition:transform .2s;}
+  .pm-node[aria-expanded="true"] svg{transform:scale(1.1); border-width:3px;}
+  .pm-node[aria-expanded="true"] span{font-weight:600;}
+  .pm-wash{opacity:.55;}
+  .pm-ink{fill:none; stroke:#2e2723; stroke-width:6; stroke-linecap:round; stroke-linejoin:round;}
+  .pm-funnel{display:block; width:70%; height:34px; margin:6px auto 0;}
+  .pm-funnel path{fill:none; stroke:#2e2723; stroke-width:1.6; opacity:.45; stroke-dasharray:2 6; vector-effect:non-scaling-stroke;}
+  .pm-hub{
+    display:flex; align-items:center; gap:12px; margin:2px auto 0; padding:8px 18px 8px 8px; cursor:pointer;
+    background:#fffdf8; border:2.5px solid var(--brown); border-radius:999px; font-family:"DM Sans", sans-serif; color:var(--brown);
+  }
+  .pm-hub-art svg{width:44px; height:44px; display:block;}
+  .pm-hub-text{display:flex; flex-direction:column; text-align:left;}
+  .pm-hub-text b{font-family:"Lora", serif; font-weight:400; font-size:19px; line-height:1.1;}
+  .pm-hub-text small{font-size:12px; color:var(--muted);}
+  .pm-hub[aria-expanded="true"]{background:var(--brown); color:#fff;}
+  .pm-hub[aria-expanded="true"] small{color:#d6ccc2;}
+  .pm-hub[aria-expanded="true"] .pm-ink{stroke:#fff;}
+  .pm-detail{margin-top:14px; background:#fffdf8; border-radius:14px; padding:14px 16px; font-size:14.5px; line-height:1.5; animation:pm-open .25s ease;}
+  .pm-detail p{margin:0 0 6px; color:var(--muted);}
+  .pm-detail-title{font-family:"Lora", serif; font-size:18px; line-height:1.3; margin-bottom:6px;}
+  .pm-detail-label{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:10px 0 4px;}
+  .pm-detail ul{margin:0; padding-left:18px;}
+  .pm-detail li{margin-bottom:4px;}
+  @keyframes pm-open{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;}}
+  .pm-flow{display:flex; justify-content:center; padding:4px 0;}
+  .pm-flow svg{width:20px; height:54px; overflow:visible;}
+  .pm-flow path{fill:none; stroke:#2e2723; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .pm-flow-line{stroke-dasharray:1 9; animation:pm-flow 1.2s linear infinite;}
+  @keyframes pm-flow{to{stroke-dashoffset:-20;}}
+  @media (prefers-reduced-motion:reduce){ .pm-flow-line{animation:none;} .pm-detail{animation:none;} }
 </style>
 
 
@@ -1042,6 +1093,47 @@
       m.style.display = n.metrics ? '' : 'none';
     }
     select('h1');
+
+    // Phones: the same pipeline, stacked top to bottom. Tapping a priority or hub opens its details in place.
+    const pm = document.createElement('div');
+    pm.className = 'pm';
+    const mini = (art, wash) => '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="pm-wash" fill="' + wash + '">' + WASH + '</g><g class="pm-ink">' + ART[art] + '</g></svg>';
+    STAGES.forEach((st,si) => {
+      const items = N.filter(n => n.s === si && !n.hub), hub = N.find(n => n.s === si && n.hub);
+      const sec = document.createElement('section');
+      sec.className = 'pm-stage';
+      sec.style.setProperty('--wash', st.wash);
+      sec.innerHTML =
+        '<div class="pm-head"><span class="pm-name">' + st.name + '</span><span class="pm-frame">' + st.frame + '</span></div>' +
+        '<p class="pm-q">' + st.q + '</p>' +
+        '<div class="pm-nodes">' + items.map(n => '<button class="pm-node" data-id="' + n.id + '" aria-expanded="false">' + mini(n.art, st.wash) + '<span>' + n.label.join(' ') + '</span></button>').join('') + '</div>' +
+        '<svg class="pm-funnel" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"><path d="M50 2C50 28 150 18 150 44"/><path d="M150 2V44"/><path d="M250 2C250 28 150 18 150 44"/></svg>' +
+        '<button class="pm-hub" data-id="' + hub.id + '" aria-expanded="false"><span class="pm-hub-art">' + mini(hub.art, st.wash) + '</span><span class="pm-hub-text"><b>' + hub.title + '</b><small>Tap for metrics</small></span></button>' +
+        '<div class="pm-detail" hidden></div>';
+      pm.appendChild(sec);
+      if (si < STAGES.length - 1){
+        const f = document.createElement('div');
+        f.className = 'pm-flow';
+        f.innerHTML = '<svg viewBox="0 0 20 54" aria-hidden="true"><path class="pm-flow-line" d="M10 2V48"/><path d="M4 42l6 8 6-8"/></svg>';
+        pm.appendChild(f);
+      }
+    });
+    document.getElementById('pipe').appendChild(pm);
+
+    pm.addEventListener('click', e => {
+      const btn = e.target.closest('.pm-node, .pm-hub');
+      if (!btn) return;
+      const sec = btn.closest('.pm-stage'), panel = sec.querySelector('.pm-detail');
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      sec.querySelectorAll('.pm-node, .pm-hub').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      if (open){ panel.hidden = true; return; }
+      const n = byId[btn.dataset.id];
+      btn.setAttribute('aria-expanded', 'true');
+      panel.innerHTML = '<div class="pm-detail-title">' + n.title + '</div><p>' + n.desc + '</p>' +
+        (n.metrics ? '<div class="pm-detail-label">How I\'d measure it</div><ul>' + n.metrics.map(m => '<li>' + m + '</li>').join('') + '</ul>' : '');
+      panel.hidden = false;
+      if (panel.getBoundingClientRect().bottom > window.innerHeight) panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    });
   })();
 
   // Wrap tables so wide ones scroll horizontally instead of overflowing the page
