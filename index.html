@@ -385,6 +385,21 @@
   .todo-icon .ink{fill:none; stroke:#2e2723; stroke-width:4.5; stroke-linecap:round; stroke-linejoin:round;}
   .todo-icon .wash{opacity:.6;}
   .todo-item.is-done .todo-icon{opacity:.45;}
+  .pr-left{display:flex; flex-direction:column; align-items:flex-start;}
+  .pr-stage{display:flex; align-items:center; gap:7px; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  .pr-stage .blob{width:14px; height:12px; display:inline-block;}
+  .pr-frame{font-family:"Lora", serif; font-style:italic; font-size:20px; color:var(--muted); margin-top:18px;}
+  .pr-days{font-family:"Lora", serif; font-size:88px; line-height:.95; letter-spacing:-.02em;}
+  .pr-unit{font-family:"Lora", serif; font-size:24px; margin-bottom:22px;}
+  .pr-obj{display:flex; flex-direction:column; border-top:2px solid var(--brown); padding-top:10px; width:100%;}
+  .pr-obj-label{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  .pr-obj-value{font-family:"Lora", serif; font-size:30px; line-height:1.2;}
+  .pr-q{font-family:"Lora", serif; font-style:italic; font-size:17px; line-height:1.45; margin:12px 0 0;}
+  .pr-left .cal-art{width:170px; align-self:center; margin-top:auto; padding-top:18px;}
+  .cal-body.pr{align-items:stretch;}
+  .todo-sub{list-style:none; margin:16px 0 0; font-family:"Lora", serif; font-size:17px; padding-bottom:2px;}
+  .todo-sub:first-child{margin-top:6px;}
+  @media (max-width:820px){ .pr-days{font-size:68px;} .pr-obj-value{font-size:26px;} .pr-left .cal-art{display:none;} }
 </style>
 
 
@@ -421,7 +436,7 @@
       <li><a href="#market" data-nav>Market Landscape</a></li>
       <li><a class="divider-label">Part 2 — The plan</a></li>
       <li><a href="#strategy" data-nav>The Strategy</a></li>
-      <li><a href="#plan" data-nav>First 90 Days</a></li>
+      <li><a href="#plan" data-nav>Priorities</a></li>
       <li><a href="#about" data-nav>About</a></li>
       <li><a href="#next" data-nav>Next Step</a></li>
     </ul>
@@ -683,11 +698,11 @@
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
 
-    <!-- ===================== 90-DAY PLAN ===================== -->
+    <!-- ===================== PRIORITIES ===================== -->
     <section id="plan">
-      <h2>First 90 days.</h2>
+      <h2>Priorities, by time frame.</h2>
 
-      <p>The initiatives from the strategy, laid out over three months and grouped by the question each one answers. Pick a month, open an item to see what it involves, and tick it off when it ships.</p>
+      <p>The three questions from the strategy, each with its objective, its time frame and the priorities that answer it. Pick a time frame, open a priority to see what it involves, and tick it off when it ships.</p>
 
       <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <defs>
@@ -697,34 +712,31 @@
       </svg>
 
       <div class="cal" id="tracker">
-        <div class="cal-tabs" role="tablist" aria-label="Plan month">
-          <button class="cal-tab" role="tab" data-phase="0"><span class="cal-tab-month">Month 1</span><span class="cal-tab-days">Days 1–30 · <span class="cal-tab-count"></span></span></button>
-          <button class="cal-tab" role="tab" data-phase="1"><span class="cal-tab-month">Month 2</span><span class="cal-tab-days">Days 31–60 · <span class="cal-tab-count"></span></span></button>
-          <button class="cal-tab" role="tab" data-phase="2"><span class="cal-tab-month">Month 3</span><span class="cal-tab-days">Days 61–90 · <span class="cal-tab-count"></span></span></button>
+        <div class="cal-tabs" role="tablist" aria-label="Time frame">
+          <button class="cal-tab" role="tab" data-phase="0"><span class="cal-tab-month">30–60 days</span><span class="cal-tab-days">Earn attention · <span class="cal-tab-count"></span></span></button>
+          <button class="cal-tab" role="tab" data-phase="1"><span class="cal-tab-month">90 days</span><span class="cal-tab-days">Build trust · <span class="cal-tab-count"></span></span></button>
+          <button class="cal-tab" role="tab" data-phase="2"><span class="cal-tab-month">180 days</span><span class="cal-tab-days">Win business · <span class="cal-tab-count"></span></span></button>
         </div>
 
-        <div class="cal-body">
-          <div class="cal-sheet">
-            <div class="cal-sheet-head">
-              <div class="cal-objective" id="cal-objective"></div>
-              <div class="cal-legend">
-                <span><i class="blob t-attention"></i>Earn attention</span>
-                <span><i class="blob t-trust"></i>Build trust</span>
-                <span><i class="blob t-business"></i>Win business</span>
-              </div>
-            </div>
-            <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-body pr">
+          <div class="cal-sheet pr-left">
+            <div class="pr-stage" id="pr-stage"></div>
+            <div class="pr-frame">First</div>
+            <div class="pr-days" id="pr-days"></div>
+            <div class="pr-unit">days</div>
+            <div class="pr-obj"><span class="pr-obj-label">Objective</span><span class="pr-obj-value" id="pr-obj"></span></div>
+            <p class="pr-q" id="pr-q"></p>
+            <div class="cal-art" id="cal-art"></div>
           </div>
 
           <div class="cal-detail">
-            <div class="cal-art" id="cal-art"></div>
-            <div class="todo-head"><span class="todo-head-title">To do</span><span class="todo-head-count" id="todo-count"></span></div>
+            <div class="todo-head"><span class="todo-head-title">Priorities</span><span class="todo-head-count" id="todo-count"></span></div>
             <ul class="todo" id="todo"></ul>
           </div>
         </div>
       </div>
 
-      <div class="callout">By day 90, every audience has a clear answer and sales has the material to use it. By day 180, we can see in the pipeline which of it worked.</div>
+      <div class="callout">The time frame is when each objective's numbers start to mean something. All three start on day one.</div>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
@@ -833,15 +845,8 @@
   }, { threshold: 0.8 });
   seqObserver.observe(seqWord);
 
-  // 90-day calendar: month tabs, milestone days, hand-drawn art. "Done" marks are saved per viewer.
+  // Priorities: time-frame tabs, a split view (objective | to-do list) and hand-drawn art. Ticks are saved per viewer.
   (function(){
-    const TAGS = {
-      foundation:{ label:'Foundation', cls:'t-foundation', wash:'#e1bee6' },
-      attention:{ label:'Earn attention', cls:'t-attention', wash:'#fb9a74' },
-      trust:{ label:'Build trust', cls:'t-trust', wash:'#8fd6f7' },
-      business:{ label:'Win business', cls:'t-business', wash:'#ffd36b' }
-    };
-    // Hand-drawn doodles, viewBox 0 0 120 120. Strokes get the ink + smudge filters.
     const ART = {
       phone:'<path d="M34 34c-8 4-10 14-6 24 6 16 18 30 34 38 10 4 18 2 22-6L72 78c-3-2-6-2-8 1l-4 4c-10-5-17-13-21-22l4-4c3-2 3-6 1-8L38 34c-1-1-3-1-4 0z"/><path d="M70 34c8 2 14 8 16 16"/><path d="M72 20c14 3 25 14 28 28"/>',
       people:'<circle cx="36" cy="46" r="10"/><circle cx="60" cy="38" r="12"/><circle cx="84" cy="46" r="10"/><path d="M20 84c0-14 7-22 16-22s14 6 15 12"/><path d="M40 88c0-18 8-30 20-30s20 12 20 30"/><path d="M69 74c1-6 6-12 15-12s16 8 16 22"/>',
@@ -868,142 +873,125 @@
     const WASH = '<path d="M28 40c12-18 52-22 66-4s10 52-12 60-50 4-58-14-8-26 4-42z"/>';
     const GROUND = '<path d="M26 110c22 4 46 4 68 0"/>';
 
+    const WASHES = { attention:'#fb9a74', trust:'#8fd6f7', business:'#ffd36b' };
+
     const PHASES = [
-      { start:1, objective:'Earn attention: cover the basics', steps:[
-        { day:5, tag:'attention', art:'magnifier', title:'Review our rank in AI search', desc:'Track the questions buyers ask ChatGPT, Claude and Perplexity, and see where Cala is mentioned or cited today.' },
-        { day:12, tag:'attention', art:'megaphone', title:'Apply for PR publications', desc:'Pitch fintech, AI and data trade press, plus founder bylines and podcasts.' },
-        { day:19, tag:'attention', art:'envelope', title:'Content calendar live', desc:'One calendar that activates every key channel: social, newsletter and email.' },
-        { day:26, tag:'trust', art:'papers', title:'Draft the first case study', desc:'Start early with a customer already in production. Case studies take the longest to approve.' }
-      ]},
-      { start:31, objective:'Expand reach, start building trust', steps:[
-        { day:34, tag:'attention', art:'chart', title:'Add paid to the calendar', desc:'Switch on paid once the messaging has been tested in sales conversations.' },
-        { day:40, tag:'attention', art:'people', title:'Influencer marketing', desc:'AI builders on YouTube, X and LinkedIn for engineers; fintech newsletters and analysts for business buyers.' },
-        { day:46, tag:'attention', art:'mic', title:'Host our first webinar or event', desc:'Pair an engineer and a compliance lead on the same use case, so both audiences attend.' },
-        { day:52, tag:'trust', art:'quote', title:'Case study, white paper & industry blogs', desc:'Proof for each audience: a customer story, a provenance white paper for data leaders, and blogs on KYC, AML and due diligence.' },
-        { day:58, tag:'trust', art:'link', title:'Partnerships rollout', desc:'Co-marketing with integration partners (n8n, LangChain, MCP clients), plus first talks with consultancies that build AI for banks.' }
-      ]},
-      { start:61, objective:'Build trust, set up conversion', steps:[
-        { day:64, tag:'trust', art:'trophy', title:'Announce customer wins', desc:'Each win becomes a news post, a LinkedIn moment and a sales email, with the customer\'s approval.' },
-        { day:70, tag:'business', art:'bubbles', title:'ABM messaging for both audiences', desc:'Engineers and data teams, and decision-makers: CDOs, heads of data and innovation leads.' },
-        { day:76, tag:'business', art:'flow', title:'Lead nurture & follow-up workflows', desc:'Sequences for each role, triggered by product use and content engagement.' },
-        { day:82, tag:'business', art:'magnet', title:'Lead-gen workshop or tool', desc:'For example, an instant sourced KYC profile of any company, built on Cala, or a hands-on "build a KYC agent" workshop.' },
-        { day:88, tag:'business', art:'gauge', title:'Lead scoring model', desc:'Fit (target account, role) plus intent (product use, pricing page visits, webinars). Ready to judge on pipeline at day 180.' }
-      ]}
+      { tag:'attention', cls:'t-attention', stage:'Top of funnel', days:'30–60', objective:'Earn attention',
+        q:'How can we make ourselves known in key verticals like finance and pharma?',
+        groups:[
+          { label:'1. Cover the basics', items:[
+            { art:'magnifier', title:'Review our rank in AI search', desc:'Track the questions buyers ask ChatGPT, Claude and Perplexity, and see where Cala is mentioned or cited today.' },
+            { art:'megaphone', title:'Apply for PR publications', desc:'Pitch fintech, AI and data trade press, plus founder bylines and podcasts.' },
+            { art:'envelope', title:'Content calendar to activate all key channels', desc:'Social, paid, newsletter and email, run from one calendar.' }
+          ]},
+          { label:'2. Expand', items:[
+            { art:'mic', title:'Host events, webinars and conferences', desc:'For example, pair an engineer and a compliance lead on the same use case, so both audiences attend.' },
+            { art:'chart', title:'Content calendar to activate all key channels', desc:'Scale the calendar across social, paid, newsletter and email based on what worked in the basics.' },
+            { art:'people', title:'Influencer marketing on LinkedIn and YouTube', desc:'AI builders for engineers; fintech voices and newsletters for business buyers.' }
+          ]}
+        ]},
+      { tag:'trust', cls:'t-trust', stage:'Middle of funnel', days:'90', objective:'Build trust',
+        q:'How can we convince our ideal customers to trust us?',
+        groups:[
+          { label:null, items:[
+            { art:'quote', title:'Case studies, white papers and industry blogs', desc:'Proof for each audience: customer stories, a provenance white paper for data leaders, and blogs on KYC, AML and due diligence.' },
+            { art:'link', title:'Partnerships rollout', desc:'Co-marketing with integration partners (n8n, LangChain, MCP clients), and first talks with consultancies that build AI for banks.' },
+            { art:'trophy', title:'Customer wins', desc:'Each win becomes a news post, a LinkedIn moment and a sales email, with the customer\'s approval.' }
+          ]}
+        ]},
+      { tag:'business', cls:'t-business', stage:'Bottom of funnel', days:'180', objective:'Win business',
+        q:'How can we convert?',
+        groups:[
+          { label:null, items:[
+            { art:'magnet', title:'Develop a lead-gen workshop or tool', desc:'For example, an instant sourced KYC profile of any company, built on Cala, or a hands-on "build a KYC agent" workshop.' },
+            { art:'flow', title:'Design workflows for lead nurturing and follow-ups', desc:'Sequences for each role, triggered by product use and content engagement.' },
+            { art:'bubbles', title:'Support ABM messaging for both audiences', desc:'Engineers and data teams, and decision-makers: CDOs, heads of data and innovation leads.' },
+            { art:'gauge', title:'Develop a lead scoring model', desc:'Fit (target account, role) plus intent (product use, pricing page visits, webinars).' }
+          ]}
+        ]}
     ];
-    const TICK = '<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13c3 2 5 5 6 7 3-7 7-12 12-17" fill="none" stroke="#2e2723" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink-rough)"/></svg>';
+    const TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13c3 2 5 5 6 7 3-7 7-12 12-17" fill="none" stroke="#2e2723" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink-rough)"/></svg>';
     const store = {
       get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
       set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
     };
-    const key = d => 'cala-todo-done-' + d;
-    const isDone = d => store.get(key(d)) === '1';
+    const key = (p,i) => 'cala-pri-' + p + '-' + i;
+    const isDone = (p,i) => store.get(key(p,i)) === '1';
+    const items = p => PHASES[p].groups.flatMap(g => g.items);
 
     const tabs = document.querySelectorAll('.cal-tab');
-    const grid = document.getElementById('cal-grid');
     const $ = id => document.getElementById(id);
     const art = $('cal-art'), todo = $('todo');
-    let phase = 0, active = 0, cells = {}, rows = [];
+    let phase = 0, active = 0, rows = [];
+
+    const drawing = (a, wash, smudge) => '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + wash + '">' + WASH + '</g>' +
+      (smudge ? '<g class="smudge" transform="translate(3 4)">' + ART[a] + GROUND + '</g>' : '') + '<g class="ink">' + ART[a] + '</g></svg>';
 
     function counts(){
       tabs.forEach((t,p) => {
-        const s = PHASES[p].steps;
-        t.querySelector('.cal-tab-count').textContent = s.filter(x => isDone(x.day)).length + '/' + s.length + ' done';
+        const list = items(p);
+        t.querySelector('.cal-tab-count').textContent = list.filter((_,i) => isDone(p,i)).length + '/' + list.length + ' done';
       });
-      const s = PHASES[phase].steps;
-      $('todo-count').textContent = s.filter(x => isDone(x.day)).length + ' of ' + s.length + ' done';
+      const list = items(phase);
+      $('todo-count').textContent = list.filter((_,i) => isDone(phase,i)).length + ' of ' + list.length + ' done';
     }
 
-    function buildGrid(){
+    function build(){
       const P = PHASES[phase];
-      $('cal-objective').textContent = P.objective;
-      grid.innerHTML = ''; cells = {};
-      const byDay = {};
-      P.steps.forEach((s,i) => byDay[s.day] = i);
-      for (let n = 0; n < 35; n++){
-        const day = P.start + n;
-        const el = document.createElement(day in byDay ? 'button' : 'div');
-        el.className = 'cal-cell';
-        if (n >= 30){ el.classList.add('is-empty'); grid.appendChild(el); continue; }
-        if (day in byDay){
-          const i = byDay[day], s = P.steps[i];
-          el.classList.add('is-ms');
-          el.setAttribute('aria-label', 'Day ' + day + ': ' + s.title);
-          el.innerHTML = '<i class="blob ' + TAGS[s.tag].cls + '"></i><span class="num">' + day + '</span><span class="mini">' + s.title + '</span>' + TICK;
-          el.addEventListener('click', () => select(i));
-          cells[i] = el;
-        } else {
-          el.innerHTML = '<span class="num">' + day + '</span>';
-        }
-        grid.appendChild(el);
-      }
-    }
-
-    // The to-do list is grouped by the three funnel questions
-    const QUESTIONS = [
-      { tag:'attention', stage:'Top of funnel', q:'How can we make ourselves known in key verticals like finance and pharma?', objective:'Earn attention', frame:'First 30–60 days' },
-      { tag:'trust', stage:'Middle of funnel', q:'How can we convince our ideal customers to trust us?', objective:'Build trust', frame:'First 90 days' },
-      { tag:'business', stage:'Bottom of funnel', q:'How can we convert?', objective:'Win business', frame:'First 180 days' }
-    ];
-    const miniArt = s => '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + TAGS[s.tag].wash + '">' + WASH + '</g><g class="ink">' + ART[s.art] + '</g></svg>';
-
-    function buildList(){
+      $('pr-stage').innerHTML = '<i class="blob ' + P.cls + '"></i>' + P.stage;
+      $('pr-days').textContent = P.days;
+      $('pr-obj').textContent = P.objective;
+      $('pr-q').textContent = P.q;
       todo.innerHTML = ''; rows = [];
-      const steps = PHASES[phase].steps;
-      QUESTIONS.forEach(Q => {
-        const idx = steps.map((s,i) => i).filter(i => steps[i].tag === Q.tag);
-        if (!idx.length) return;
-        const head = document.createElement('li');
-        head.className = 'todo-group';
-        head.innerHTML = '<div class="tg-stage"><i class="blob ' + TAGS[Q.tag].cls + '"></i>' + Q.stage + '</div>' +
-          '<div class="tg-q">' + Q.q + '</div>' +
-          '<div class="tg-meta"><span><b>Objective</b> ' + Q.objective + '</span><span><b>Time frame</b> ' + Q.frame + '</span></div>';
-        todo.appendChild(head);
-        idx.forEach(i => {
-          const s = steps[i];
+      let i = 0;
+      P.groups.forEach(g => {
+        if (g.label){
+          const h = document.createElement('li');
+          h.className = 'todo-sub';
+          h.textContent = g.label;
+          todo.appendChild(h);
+        }
+        g.items.forEach(it => {
+          const n = i++;
           const li = document.createElement('li');
           li.className = 'todo-item';
           li.innerHTML =
-            '<button class="todo-check" aria-label="Mark ' + s.title + ' done" aria-pressed="false">' + TICK.replace('class="tick"', '') + '</button>' +
-            '<button class="todo-main" aria-expanded="false"><span class="todo-meta">Day ' + s.day + '</span>' +
-            '<span class="todo-title">' + s.title + '</span></button>' +
-            '<span class="todo-icon">' + miniArt(s) + '</span>' +
-            '<div class="todo-desc">' + s.desc + '</div>';
-          li.querySelector('.todo-check').addEventListener('click', () => toggle(i));
-          li.querySelector('.todo-main').addEventListener('click', () => select(i));
-          li.querySelector('.todo-icon').addEventListener('click', () => select(i));
+            '<button class="todo-check" aria-label="Mark ' + it.title + ' done" aria-pressed="false">' + TICK + '</button>' +
+            '<button class="todo-main" aria-expanded="false"><span class="todo-title">' + it.title + '</span></button>' +
+            '<span class="todo-icon">' + drawing(it.art, WASHES[P.tag], false) + '</span>' +
+            '<div class="todo-desc">' + it.desc + '</div>';
+          li.querySelector('.todo-check').addEventListener('click', () => toggle(n));
+          li.querySelector('.todo-main').addEventListener('click', () => select(n));
+          li.querySelector('.todo-icon').addEventListener('click', () => select(n));
           todo.appendChild(li);
-          rows[i] = li;
+          rows.push(li);
         });
       });
     }
 
     function render(animate){
-      const steps = PHASES[phase].steps, s = steps[active], t = TAGS[s.tag];
-      art.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + t.wash + '">' + WASH + '</g>' +
-        '<g class="smudge" transform="translate(3 4)">' + ART[s.art] + GROUND + '</g><g class="ink">' + ART[s.art] + '</g></svg>';
+      const it = items(phase)[active];
+      art.innerHTML = drawing(it.art, WASHES[PHASES[phase].tag], true);
       if (animate){ art.classList.remove('pop'); void art.offsetWidth; art.classList.add('pop'); }
-      steps.forEach((x,i) => {
-        const done = isDone(x.day), on = i === active;
-        cells[i].classList.toggle('is-active', on);
-        cells[i].classList.toggle('is-done', done);
-        rows[i].classList.toggle('is-active', on);
-        rows[i].classList.toggle('is-done', done);
-        rows[i].querySelector('.todo-check').setAttribute('aria-pressed', done);
-        rows[i].querySelector('.todo-main').setAttribute('aria-expanded', on);
+      rows.forEach((li,i) => {
+        const done = isDone(phase,i), on = i === active;
+        li.classList.toggle('is-active', on);
+        li.classList.toggle('is-done', done);
+        li.querySelector('.todo-check').setAttribute('aria-pressed', done);
+        li.querySelector('.todo-main').setAttribute('aria-expanded', on);
       });
       counts();
     }
 
     function select(i){ active = i; render(true); }
     function toggle(i){
-      const d = PHASES[phase].steps[i].day;
-      store.set(key(d), isDone(d) ? '0' : '1');
+      store.set(key(phase,i), isDone(phase,i) ? '0' : '1');
       if (active !== i){ active = i; render(true); } else render(false);
     }
     function setPhase(p){
       phase = p; active = 0;
       tabs.forEach((t,n) => { t.setAttribute('aria-selected', n === p); t.tabIndex = n === p ? 0 : -1; });
-      buildGrid(); buildList(); render(true);
+      build(); render(true);
     }
 
     tabs.forEach((t,i) => {
