@@ -6,7 +6,7 @@
 <title>Cala Marketing Proposal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Gochi+Hand&display=swap" rel="stylesheet">
 <style>
   :root{
     --brown:#2e2723;
@@ -453,6 +453,45 @@
   }
   @media (prefers-reduced-motion:reduce){ .pipe-edge-flow{animation:none;} }
 
+  /* ---------- Intro, in Cala's centred, hand-annotated style ---------- */
+  .intro-hero{text-align:center; padding-bottom:12px;}
+  .intro-hi{font-size:52px; line-height:1.1; max-width:none;}
+  .intro-lead{font-family:"Lora", serif; font-size:24px; line-height:1.5; margin:18px 0 0;}
+  .intro{text-align:center;}
+  .intro p{font-family:"Lora", serif; font-size:22px; line-height:1.5; margin:0 0 30px;}
+  .intro-h{font-size:30px; margin:56px 0 24px;}
+  .intro-h:first-child{margin-top:24px;}
+  .hand{
+    font-family:"Gochi Hand", cursive; text-transform:uppercase; letter-spacing:.07em; font-size:1.1em;
+    display:inline-block; line-height:1.2;
+  }
+  .hand.u{
+    padding-bottom:7px; background-repeat:no-repeat; background-position:0 100%; background-size:100% 8px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5c40-3 90-3 130-1s50 1 66-1' fill='none' stroke='%232e2723' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  .scribble{
+    padding-bottom:6px; background-repeat:no-repeat; background-position:0 100%; background-size:100% 9px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 9' preserveAspectRatio='none'%3E%3Cpath d='M2 5c4-3 6 3 10 0s6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 10 0 6 3 8 0' fill='none' stroke='%232e2723' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  .intro-art{width:min(360px, 85%); margin:4px auto 26px;}
+  .intro-art svg{width:100%; height:auto; overflow:visible;}
+  .intro-art .ink{fill:none; stroke:#2e2723; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; filter:url(#ink-rough);}
+  .intro-art .robot .f{fill:#fcf8f0;}
+  .intro-art .smudge{fill:none; stroke:#8e8175; stroke-width:9; stroke-linecap:round; opacity:.35; filter:url(#ink-smudge);}
+  .intro-art .wash{opacity:.55; filter:url(#ink-smudge);}
+  .intro-jump{
+    display:inline-block; margin-top:4px; padding:12px 24px; text-decoration:none; color:#fff; background:var(--brown);
+    border-radius:255px 12px 225px 14px / 14px 225px 12px 255px; font-weight:500;
+  }
+  .intro-jump:hover{background:#000;}
+  @media (max-width:720px){
+    .intro-hi{font-size:40px;}
+    .intro-lead{font-size:20px;}
+    .intro p{font-size:18px;}
+    .intro p br{display:none;}
+    .intro-h{font-size:25px;}
+  }
+
 </style>
 
 
@@ -499,23 +538,65 @@
 <div class="shell">
   <main class="content">
 
-    <div class="hero">
+    <div class="hero intro-hero">
       <div class="eyebrow">Marketing &amp; Comms proposal — prepared for Cala</div>
-      <h1>Earning trust before the sale.</h1>
-      <div class="byline">A marketing &amp; comms proposal by Raluca Mitran · October 2026</div>
+      <h1 class="intro-hi">Hi, I'm Raluca.</h1>
+      <p class="intro-lead">Right now I want one thing:<br><span class="hand u">big impact, from a small team.</span></p>
+      <div class="byline">October 2026</div>
     </div>
 
     <!-- ===================== OVERVIEW ===================== -->
-    <section id="overview">
-      <h2>Why I wrote this.</h2>
+    <section id="overview" class="intro">
+      <h2 class="intro-h">Why Cala?</h2>
 
-      <p>I came to Cala's afterwork drinks a while back and left genuinely impressed. I started writing down how I'd take Cala to market and never got round to sending it. Now that the Marketing &amp; Comms role is open, I've rebuilt it around what the role asks for: who actually chooses Cala, what each of them needs to hear, and how marketing builds the proof that gets them to yes.</p>
+      <p>I'll be honest: the first time I heard about Cala,<br>I didn't get it.</p>
 
-      <p>Cala is building for agents what Bloomberg and LexisNexis became for human professionals: one graph of verified facts about every company, person, filing and regulation. It launched in June and global enterprises already run it in production. For marketing, that's a rare place to start. The product is real, the customers are real, and the story hasn't been told properly yet.</p>
+      <p>So I explained it to myself the simple way.<br>Picture a well-organised library for AI.<br>Instead of searching all over the place,<br>an agent asks Cala and gets <span class="scribble">the right fact,</span><br><span class="hand u">right away.</span></p>
 
-      <div class="callout">Cala's buyers want substance over spin. So marketing's job isn't to make Cala sound bigger. It's to make what's already true impossible to miss.</div>
+      <div class="intro-art" aria-hidden="true">
+        <svg viewBox="0 0 240 210">
+          <g class="wash"><path fill="#8fd6f7" d="M122 112c14-16 58-14 70 4s4 62-22 70-54 0-58-24 0-34 10-50z"/><path fill="#fb9a74" d="M86 124c6-8 26-8 32 2s-2 26-14 28-22-4-22-14 0-10 4-16z"/></g>
+          <g class="smudge" transform="translate(3 4)">
+            <path d="M20 90h200M20 150h200M30 196c40 4 130 4 180 0"/>
+            <path d="M136 138h48v42h-48zM140 104h40v30h-40z"/>
+          </g>
+          <g class="ink">
+            <path d="M24 18v140M216 18v140M20 30c60-2 140-2 200 0M20 90c60 2 140 2 200 0M20 150c60-2 140-2 200 0"/>
+            <path d="M34 90V50h14v40M50 90V42h12v48M64 90V54h16v36M84 90l9-40 12 3-9 37M110 90V46h12v44M124 90V58h18v32M146 90V48h12v42M160 90V52h16v38M180 90V44h12v46M194 90V56h16v34"/>
+            <path d="M34 150v-38h14v38M50 150v-46h16v46M68 150v-34h12v34M196 150v-42h12v42"/>
+            <path d="M30 196c40 4 130 4 180 0"/>
+          </g>
+          <g class="ink robot">
+            <path class="f" d="M140 104h40v30h-40z"/>
+            <path d="M160 104v-10"/><circle cx="160" cy="90" r="3.5"/>
+            <circle cx="152" cy="117" r="3"/><circle cx="168" cy="117" r="3"/>
+            <path d="M153 126c4 3 10 3 14 0"/>
+            <path class="f" d="M136 138h48v42h-48z"/>
+            <path d="M148 180v12M172 180v12"/>
+            <path d="M184 150c8 2 12 8 12 16"/>
+            <path d="M136 148c-8 2-14 0-18-6"/>
+            <path class="f" d="M96 132l18-6 6 18-18 6z"/>
+            <path d="M102 140l4 4 8-9"/>
+            <path d="M90 118l-5-7M101 113v-9M83 131h-9"/>
+          </g>
+        </svg>
+      </div>
 
-      <p>What follows: the buying committee and how to talk to each person on it, where to focus first, a strategy built on three questions (one for each stage of the funnel), and a first 90 days.</p>
+      <p>It properly clicked for me with the GTM example with Clay.</p>
+
+      <p>I came to your afterwork drinks a while back<br>and left genuinely impressed.<br>I started writing down how I'd take Cala to market,<br>and <span class="hand">never sent it.</span></p>
+
+      <p>Now the Marketing &amp; Comms role is open,<br>so I rebuilt it around what the role asks for:<br>who chooses Cala, what each of them needs to hear,<br>and how marketing builds the proof that gets them to <span class="scribble">yes.</span></p>
+
+      <h2 class="intro-h">Why me &amp; Cala?</h2>
+
+      <p>I've built growth marketing teams from zero to one,<br>written ABM and campaign playbooks that scale,<br>and worked side by side with sales, product and data<br>to move the work forward.</p>
+
+      <p>I like uncertainty.<br>I find my way through it by setting my own north star,<br>and I set it the same way every time:<br><span class="hand u">with questions.</span></p>
+
+      <p>Here are the ones I'd answer in my first<br>30, 60, 90 and 180 days.</p>
+
+      <a class="intro-jump" href="#strategy">See the questions ↓</a>
     </section>
 
     <div class="part-label">Part 1 — Who chooses Cala</div>
