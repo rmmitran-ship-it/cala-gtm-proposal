@@ -509,6 +509,15 @@
 
 <div id="scroll-progress"></div>
 
+<!-- Hand-drawn ink filters shared by the pipeline graph and the intro drawing -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="ink-rough"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+    <filter id="ink-smudge" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9"/><feGaussianBlur stdDeviation="3.2"/></filter>
+  </defs>
+</svg>
+
+
 <!-- Mobile top bar -->
 <div class="topbar">
   <div class="topbar-title">Cala — Marketing &amp; Comms</div>
@@ -535,8 +544,6 @@
       <li><a href="#committee" data-nav>Who I Would Target</a></li>
       <li><a href="#messaging" data-nav>One Message, Three Ways</a></li>
       <li><a href="#focus" data-nav>Where to Focus</a></li>
-      <li><a class="divider-label">Part 2 — The plan</a></li>
-      <li><a href="#plan" data-nav>Priorities</a></li>
       <li><a href="#about" data-nav>About</a></li>
       <li><a href="#next" data-nav>Next Step</a></li>
     </ul>
@@ -735,50 +742,6 @@
 
       <h3>Geography</h3>
       <p>Barcelona gives Cala a home-market advantage in Spain, where BORME and CNMV data is already covered. Combined with the UK and US sources, that makes Spain, the UK and the US the natural first account lists, aligned with where sales already sells.</p>
-    </section>
-
-    <div class="part-label">Part 2 — The plan</div>
-    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
-
-    <!-- ===================== PRIORITIES ===================== -->
-    <section id="plan">
-      <h2>Priorities, by time frame.</h2>
-
-      <p>The three questions from the strategy, each with its objective, its time frame and the priorities that answer it. Pick a time frame, open a priority to see what it involves, and tick it off when it ships.</p>
-
-      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-        <defs>
-          <filter id="ink-rough"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
-          <filter id="ink-smudge" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9"/><feGaussianBlur stdDeviation="3.2"/></filter>
-        </defs>
-      </svg>
-
-      <div class="cal" id="tracker">
-        <div class="cal-tabs" role="tablist" aria-label="Time frame">
-          <button class="cal-tab" role="tab" data-phase="0"><span class="cal-tab-month">30–60 days</span><span class="cal-tab-days">Earn attention · <span class="cal-tab-count"></span></span></button>
-          <button class="cal-tab" role="tab" data-phase="1"><span class="cal-tab-month">90 days</span><span class="cal-tab-days">Build trust · <span class="cal-tab-count"></span></span></button>
-          <button class="cal-tab" role="tab" data-phase="2"><span class="cal-tab-month">180 days</span><span class="cal-tab-days">Win business · <span class="cal-tab-count"></span></span></button>
-        </div>
-
-        <div class="cal-body pr">
-          <div class="cal-sheet pr-left">
-            <div class="pr-stage" id="pr-stage"></div>
-            <div class="pr-frame">First</div>
-            <div class="pr-days" id="pr-days"></div>
-            <div class="pr-unit">days</div>
-            <div class="pr-obj"><span class="pr-obj-label">Objective</span><span class="pr-obj-value" id="pr-obj"></span></div>
-            <p class="pr-q" id="pr-q"></p>
-            <div class="cal-art" id="cal-art"></div>
-          </div>
-
-          <div class="cal-detail">
-            <div class="todo-head"><span class="todo-head-title">Priorities</span><span class="todo-head-count" id="todo-count"></span></div>
-            <ul class="todo" id="todo"></ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="callout">The time frame is when each objective's numbers start to mean something. All three start on day one.</div>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
@@ -1033,148 +996,15 @@
   }, { threshold: 0.8 });
   seqObserver.observe(seqWord);
 
-  // Priorities: time-frame tabs, a split view (objective | to-do list) and hand-drawn art. Ticks are saved per viewer.
   (function(){
-    const WASHES = { attention:'#fb9a74', trust:'#8fd6f7', business:'#ffd36b' };
-
-    const PHASES = [
-      { tag:'attention', cls:'t-attention', stage:'Top of funnel', days:'30–60', objective:'Earn attention',
-        q:'How can we make ourselves known in key verticals like finance and pharma?',
-        groups:[
-          { label:'1. Cover the basics', items:[
-            { art:'magnifier', title:'Review our rank in AI search', desc:'Track the questions buyers ask ChatGPT, Claude and Perplexity, and see where Cala is mentioned or cited today.' },
-            { art:'megaphone', title:'Apply for PR publications', desc:'Pitch fintech, AI and data trade press, plus founder bylines and podcasts.' },
-            { art:'envelope', title:'Content calendar to activate all key channels', desc:'Social, paid, newsletter and email, run from one calendar.' }
-          ]},
-          { label:'2. Expand', items:[
-            { art:'mic', title:'Host events, webinars and conferences', desc:'For example, pair an engineer and a compliance lead on the same use case, so both audiences attend.' },
-            { art:'chart', title:'Content calendar to activate all key channels', desc:'Scale the calendar across social, paid, newsletter and email based on what worked in the basics.' },
-            { art:'people', title:'Influencer marketing on LinkedIn and YouTube', desc:'AI builders for engineers; fintech voices and newsletters for business buyers.' }
-          ]}
-        ]},
-      { tag:'trust', cls:'t-trust', stage:'Middle of funnel', days:'90', objective:'Build trust',
-        q:'How can we convince our ideal customers to trust us?',
-        groups:[
-          { label:null, items:[
-            { art:'quote', title:'Case studies, white papers and industry blogs', desc:'Proof for each audience: customer stories, a provenance white paper for data leaders, and blogs on KYC, AML and due diligence.' },
-            { art:'link', title:'Partnerships rollout', desc:'Co-marketing with integration partners (n8n, LangChain, MCP clients), and first talks with consultancies that build AI for banks.' },
-            { art:'trophy', title:'Customer wins', desc:'Each win becomes a news post, a LinkedIn moment and a sales email, with the customer\'s approval.' }
-          ]}
-        ]},
-      { tag:'business', cls:'t-business', stage:'Bottom of funnel', days:'180', objective:'Win business',
-        q:'How can we convert?',
-        groups:[
-          { label:null, items:[
-            { art:'magnet', title:'Develop a lead-gen workshop or tool', desc:'For example, an instant sourced KYC profile of any company, built on Cala, or a hands-on "build a KYC agent" workshop.' },
-            { art:'flow', title:'Design workflows for lead nurturing and follow-ups', desc:'Sequences for each role, triggered by product use and content engagement.' },
-            { art:'bubbles', title:'Support ABM messaging for both audiences', desc:'Engineers and data teams, and decision-makers: CDOs, heads of data and innovation leads.' },
-            { art:'gauge', title:'Develop a lead scoring model', desc:'Fit (target account, role) plus intent (product use, pricing page visits, webinars).' }
-          ]}
-        ]}
-    ];
-    const TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13c3 2 5 5 6 7 3-7 7-12 12-17" fill="none" stroke="#2e2723" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink-rough)"/></svg>';
-    const store = {
-      get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
-      set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-    };
-    const key = (p,i) => 'cala-pri-' + p + '-' + i;
-    const isDone = (p,i) => store.get(key(p,i)) === '1';
-    const items = p => PHASES[p].groups.flatMap(g => g.items);
-
-    const tabs = document.querySelectorAll('.cal-tab');
-    const $ = id => document.getElementById(id);
-    const art = $('cal-art'), todo = $('todo');
-    let phase = 0, active = 0, rows = [];
-
-    const drawing = (a, wash, smudge) => '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + wash + '">' + WASH + '</g>' +
-      (smudge ? '<g class="smudge" transform="translate(3 4)">' + ART[a] + GROUND + '</g>' : '') + '<g class="ink">' + ART[a] + '</g></svg>';
-
-    function counts(){
-      tabs.forEach((t,p) => {
-        const list = items(p);
-        t.querySelector('.cal-tab-count').textContent = list.filter((_,i) => isDone(p,i)).length + '/' + list.length + ' done';
-      });
-      const list = items(phase);
-      $('todo-count').textContent = list.filter((_,i) => isDone(phase,i)).length + ' of ' + list.length + ' done';
-    }
-
-    function build(){
-      const P = PHASES[phase];
-      $('pr-stage').innerHTML = '<i class="blob ' + P.cls + '"></i>' + P.stage;
-      $('pr-days').textContent = P.days;
-      $('pr-obj').textContent = P.objective;
-      $('pr-q').textContent = P.q;
-      todo.innerHTML = ''; rows = [];
-      let i = 0;
-      P.groups.forEach(g => {
-        if (g.label){
-          const h = document.createElement('li');
-          h.className = 'todo-sub';
-          h.textContent = g.label;
-          todo.appendChild(h);
-        }
-        g.items.forEach(it => {
-          const n = i++;
-          const li = document.createElement('li');
-          li.className = 'todo-item';
-          li.innerHTML =
-            '<button class="todo-check" aria-label="Mark ' + it.title + ' done" aria-pressed="false">' + TICK + '</button>' +
-            '<button class="todo-main" aria-expanded="false"><span class="todo-title">' + it.title + '</span></button>' +
-            '<span class="todo-icon">' + drawing(it.art, WASHES[P.tag], false) + '</span>' +
-            '<div class="todo-desc">' + it.desc + '</div>';
-          li.querySelector('.todo-check').addEventListener('click', () => toggle(n));
-          li.querySelector('.todo-main').addEventListener('click', () => select(n));
-          li.querySelector('.todo-icon').addEventListener('click', () => select(n));
-          todo.appendChild(li);
-          rows.push(li);
-        });
-      });
-    }
-
-    function render(animate){
-      const it = items(phase)[active];
-      art.innerHTML = drawing(it.art, WASHES[PHASES[phase].tag], true);
-      if (animate){ art.classList.remove('pop'); void art.offsetWidth; art.classList.add('pop'); }
-      rows.forEach((li,i) => {
-        const done = isDone(phase,i), on = i === active;
-        li.classList.toggle('is-active', on);
-        li.classList.toggle('is-done', done);
-        li.querySelector('.todo-check').setAttribute('aria-pressed', done);
-        li.querySelector('.todo-main').setAttribute('aria-expanded', on);
-      });
-      counts();
-    }
-
-    function select(i){ active = i; render(true); }
-    function toggle(i){
-      store.set(key(phase,i), isDone(phase,i) ? '0' : '1');
-      if (active !== i){ active = i; render(true); } else render(false);
-    }
-    function setPhase(p){
-      phase = p; active = 0;
-      tabs.forEach((t,n) => { t.setAttribute('aria-selected', n === p); t.tabIndex = n === p ? 0 : -1; });
-      build(); render(true);
-    }
-
-    tabs.forEach((t,i) => {
-      t.addEventListener('click', () => setPhase(i));
-      t.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-          const n = (i + (e.key === 'ArrowRight' ? 1 : 2)) % 3; setPhase(n); tabs[n].focus();
-        }
-      });
-    });
-
-    setPhase(0);
-
-    // The graph and the priorities view are wider than the text column, so fade the floating TOC while either is on screen
+    // The pipeline graph is wider than the text column, so fade the floating TOC while it's on screen
     const toc = document.getElementById('toc-panel');
     const wide = new Set();
     const io = new IntersectionObserver(entries => {
       entries.forEach(en => en.isIntersecting ? wide.add(en.target) : wide.delete(en.target));
       toc.classList.toggle('tk-hide', wide.size > 0);
     }, { threshold: 0.15 });
-    ['tracker','pipe'].forEach(id => io.observe(document.getElementById(id)));
+    io.observe(document.getElementById('pipe'));
   })();
 </script>
 
