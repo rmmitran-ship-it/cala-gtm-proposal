@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Where Cala Wins, and How to Get There</title>
+<title>Cala Marketing Proposal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
@@ -76,7 +76,7 @@
   }
   .toc-panel nav a:hover{color:var(--brown);}
   .toc-panel nav a.active{color:var(--brown); font-weight:600;}
-  @media (max-width:1023px){ .toc-panel{display:none;} }
+  @media (max-width:1359px){ .toc-panel{display:none;} }
 
   /* ---------- Mobile top bar ---------- */
   .topbar{
@@ -232,11 +232,162 @@
 
   footer{text-align:center; font-size:12px; color:var(--eyebrow); padding:40px 0 20px; font-style:italic;}
 
+  @media (max-width:1359px){ .topbar{display:flex;} }
   @media (max-width:1023px){
-    .topbar{display:flex;}
     .content{padding:32px 20px 100px; max-width:100%;}
   }
+
+  /* ---------- Buying committee cards ---------- */
+  .role-tag{display:inline-block; font-size:10.5px; font-weight:500; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); margin-bottom:6px;}
+  .card .who{font-size:13px; color:var(--muted); margin-bottom:10px;}
+  .card .q{font-family:"Lora", serif; font-style:italic; font-size:15px; line-height:1.5; margin-bottom:12px;}
+  .card p{font-size:13.5px; line-height:1.55;}
+  .card ul{font-size:13.5px; padding-left:18px;}
+  /* ---------- Funnel stages ---------- */
+  .stage{margin:32px 0;}
+  .stage-head{display:flex; flex-wrap:wrap; gap:6px 14px; align-items:baseline;}
+  .stage-label{font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:var(--orange);}
+  .stage-meta{font-size:12.5px; color:var(--muted);}
+  .stage-q{font-family:"Lora", serif; font-size:21px; line-height:1.35; margin:6px 0 4px;}
+  .card h4.sub{margin-top:16px;}
+  .card.metrics{background:#fff9ef;}
+  /* ---------- 90-day calendar (hand-drawn) ---------- */
+  .cal{
+    --cal-w:min(1040px, calc(100vw - 32px));
+    --sketch:255px 12px 225px 14px / 14px 225px 12px 255px;
+    width:var(--cal-w); margin:28px 0 8px calc(50% - var(--cal-w) / 2);
+  }
+  .cal-tabs{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px;}
+  .cal-tab{
+    background:transparent; border:2px solid transparent; border-radius:var(--sketch);
+    padding:12px 10px; cursor:pointer; text-align:center; color:var(--muted);
+    font-family:"DM Sans", sans-serif; display:flex; flex-direction:column; gap:2px;
+    transition:color .2s, background .2s, border-color .2s, transform .2s;
+  }
+  .cal-tab:hover{color:var(--brown);}
+  .cal-tab[aria-selected="true"]{background:var(--beige-50); border-color:var(--brown); color:var(--brown); transform:rotate(-.6deg);}
+  .cal-tab-month{font-family:"Lora", serif; font-size:20px;}
+  .cal-tab-days{font-size:13px;}
+
+  .cal-body{display:grid; grid-template-columns:1.15fr 1fr; gap:22px; align-items:start;}
+  .cal-sheet, .cal-detail{background:var(--beige-50); border:2px solid var(--brown); border-radius:var(--sketch); padding:22px;}
+  .cal-sheet{transform:rotate(.25deg);}
+  .cal-detail{transform:rotate(-.35deg); display:flex; flex-direction:column; align-items:center; text-align:center;}
+
+  .cal-sheet-head{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:16px;}
+  .cal-objective{font-family:"Lora", serif; font-style:italic; font-size:21px; line-height:1.3;}
+  .cal-legend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--muted);}
+  .cal-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .cal-legend .blob{width:14px; height:12px; display:inline-block;}
+
+  .blob{border-radius:62% 38% 55% 45% / 48% 60% 40% 52%;}
+  .t-foundation{background:#e1bee6;}
+  .t-attention{background:#fb9a74;}
+  .t-trust{background:#8fd6f7;}
+  .t-business{background:#ffd36b;}
+
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:0; border-top:1.5px dashed #cdbfa9; border-left:1.5px dashed #cdbfa9;}
+  .cal-cell{
+    position:relative; aspect-ratio:1 / .92; border-right:1.5px dashed #cdbfa9; border-bottom:1.5px dashed #cdbfa9;
+    padding:6px; font-size:13px; color:var(--muted); background:none; border-top:none; border-left:none;
+    font-family:"DM Sans", sans-serif; text-align:left; display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .cal-cell.is-empty{background:repeating-linear-gradient(-45deg, transparent 0 6px, rgba(205,191,169,.25) 6px 7px);}
+  .cal-cell .num{position:relative; z-index:1;}
+  .cal-cell.is-ms{cursor:pointer; color:var(--brown); font-weight:500;}
+  .cal-cell.is-ms .blob{position:absolute; inset:8% 10% 10% 8%; opacity:.75; transition:transform .25s, opacity .25s;}
+  .cal-cell.is-ms:nth-child(3n) .blob{border-radius:45% 55% 40% 60% / 58% 42% 58% 42%; transform:rotate(12deg);}
+  .cal-cell.is-ms:nth-child(3n+1) .blob{border-radius:55% 45% 62% 38% / 40% 55% 45% 60%; transform:rotate(-8deg);}
+  .cal-cell.is-ms:hover .blob{opacity:1;}
+  .cal-cell .mini{position:relative; z-index:1; font-size:10.5px; line-height:1.2; font-weight:500; color:var(--brown);
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .cal-cell.is-active::after{
+    content:""; position:absolute; inset:2px; border:2.5px solid var(--brown); z-index:2; pointer-events:none;
+    border-radius:58% 42% 52% 48% / 46% 56% 44% 54%; filter:url(#ink-rough);
+  }
+  .cal-cell .tick{position:absolute; right:4px; top:3px; width:24px; height:24px; z-index:3; display:none;}
+  .cal-cell.is-done .tick{display:block;}
+  .cal-cell.is-done .mini, .cal-cell.is-done .num{opacity:.55;}
+  .cal-cell:focus-visible{outline:2px solid var(--brown); outline-offset:-3px;}
+
+  .cal-art{width:min(230px, 70%); aspect-ratio:1; margin:4px 0 6px;}
+  .cal-art svg{width:100%; height:100%; overflow:visible;}
+  .cal-art .ink{fill:none; stroke:#2e2723; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; filter:url(#ink-rough);}
+  .cal-art .smudge{fill:none; stroke:#8e8175; stroke-width:10; stroke-linecap:round; stroke-linejoin:round; opacity:.45; filter:url(#ink-smudge);}
+  .cal-art .wash{opacity:.55; filter:url(#ink-smudge);}
+  .cal-art.pop svg{animation:cal-pop .45s ease;}
+  @keyframes cal-pop{from{transform:scale(.92) rotate(-3deg); opacity:.2;} to{transform:none; opacity:1;}}
+
+  .cal-day{font-family:"Lora", serif; font-style:italic; font-size:16px; color:var(--muted);}
+  .cal-tag{display:inline-block; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--brown); padding:3px 12px; margin:8px 0 6px;}
+  .cal-title{font-family:"Lora", serif; font-size:23px; line-height:1.25; margin-bottom:8px;}
+  .cal-desc{font-size:14.5px; line-height:1.55; color:var(--muted); max-width:320px; margin:0 0 16px;}
+  .cal-actions{margin-top:auto; display:flex; align-items:center; gap:10px;}
+  .cal-nav{width:40px; height:40px; border:2px solid var(--brown); border-radius:var(--sketch); background:none; cursor:pointer; font-size:17px; color:var(--brown);}
+  .cal-nav:disabled{opacity:.25; cursor:default;}
+  .cal-done{
+    display:inline-flex; align-items:center; gap:10px; padding:10px 18px; cursor:pointer;
+    background:var(--brown); color:#fff; border:2px solid var(--brown); border-radius:var(--sketch);
+    font-family:"DM Sans", sans-serif; font-size:14.5px; font-weight:500;
+  }
+  .cal-box{width:16px; height:16px; border:2px solid #fff; border-radius:4px 6px 3px 7px; position:relative;}
+  .cal-done[aria-pressed="true"]{background:transparent; color:var(--brown);}
+  .cal-done[aria-pressed="true"] .cal-box{border-color:var(--brown);}
+  .cal-done[aria-pressed="true"] .cal-box::after{
+    content:""; position:absolute; left:3px; top:-4px; width:6px; height:12px;
+    border:solid var(--brown); border-width:0 3px 3px 0; transform:rotate(40deg);
+  }
+  .cal button:focus-visible{outline:2px solid var(--brown); outline-offset:3px;}
+
+  @media (max-width:980px){ .cal-body{grid-template-columns:1fr;} .cal-sheet, .cal-detail{transform:none;} }
+  @media (max-width:820px){
+    .cal-body{grid-template-columns:1fr;}
+    .cal-sheet, .cal-detail{transform:none; padding:16px;}
+    .cal-cell .mini{display:none;}
+    .cal-cell{aspect-ratio:1; font-size:12px; padding:4px;}
+    .cal-tab{padding:10px 4px;}
+    .cal-tab-month{font-size:17px;}
+    .cal-tab-days{font-size:11.5px;}
+    .cal-objective{font-size:18px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .cal-art.pop svg{animation:none;} }
+  .toc-panel{transition:opacity .25s;}
+  .toc-panel.tk-hide{opacity:0; pointer-events:none;}
+  .cal-detail{align-items:stretch; text-align:left;}
+  .cal-detail .cal-art{width:150px; align-self:center; margin:0 0 6px;}
+  .todo-head{display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid var(--brown); padding-bottom:6px; margin-bottom:4px;}
+  .todo-head-title{font-family:"Lora", serif; font-size:21px;}
+  .todo-head-count{font-size:13px; color:var(--muted);}
+  .todo{list-style:none; margin:0; padding:0;}
+  .todo-item{display:grid; grid-template-columns:30px 1fr; column-gap:10px; padding:11px 0; margin:0; border-bottom:1.5px dashed #cdbfa9;}
+  .todo-check{width:22px; height:22px; margin-top:2px; border:2px solid var(--brown); border-radius:4px 7px 3px 6px; background:none; cursor:pointer; position:relative; padding:0;}
+  .todo-check svg{position:absolute; left:-3px; top:-8px; width:30px; height:30px; display:none; overflow:visible;}
+  .todo-item.is-done .todo-check svg{display:block;}
+  .todo-main{background:none; border:none; padding:0; text-align:left; cursor:pointer; font-family:"DM Sans", sans-serif; color:var(--brown); display:flex; flex-direction:column; gap:1px;}
+  .todo-meta{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted);}
+  .todo-meta .blob{width:12px; height:10px; display:inline-block;}
+  .todo-title{font-size:15.5px; font-weight:500; line-height:1.35; align-self:flex-start;}
+  .todo-item.is-done .todo-title{text-decoration:line-through; text-decoration-thickness:2px; text-decoration-color:rgba(46,39,35,.55); color:var(--muted);}
+  .todo-desc{grid-column:2; font-size:13.5px; line-height:1.5; color:var(--muted); max-height:0; overflow:hidden; opacity:0; transition:max-height .3s ease, opacity .3s, margin .3s;}
+  .todo-item.is-active .todo-desc{max-height:120px; opacity:1; margin-top:6px;}
+  .todo-item.is-active .todo-title{background:linear-gradient(transparent 58%, rgba(255,194,52,.45) 58%, rgba(255,194,52,.45) 92%, transparent 92%);}
+  .todo-group{list-style:none; margin:18px 0 2px; padding:12px 14px; background:var(--beige); border-radius:var(--sketch);}
+  .todo-group:first-child{margin-top:8px;}
+  .tg-stage{display:flex; align-items:center; gap:7px; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  .tg-stage .blob{width:13px; height:11px; display:inline-block;}
+  .tg-q{font-family:"Lora", serif; font-size:17px; line-height:1.35; margin:4px 0 6px;}
+  .tg-meta{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12.5px; color:var(--brown);}
+  .tg-meta b{font-weight:500; color:var(--muted); margin-right:4px;}
+  .todo-item{grid-template-columns:30px 1fr 44px !important;}
+  .todo-desc{grid-column:2 / 4 !important;}
+  .todo-icon{width:44px; height:44px; cursor:pointer;}
+  .todo-icon svg{width:100%; height:100%; overflow:visible;}
+  .todo-icon .ink{fill:none; stroke:#2e2723; stroke-width:4.5; stroke-linecap:round; stroke-linejoin:round;}
+  .todo-icon .wash{opacity:.6;}
+  .todo-item.is-done .todo-icon{opacity:.45;}
 </style>
+
+
 </head>
 <body>
 
@@ -244,7 +395,7 @@
 
 <!-- Mobile top bar -->
 <div class="topbar">
-  <div class="topbar-title">Cala — GTM Proposal</div>
+  <div class="topbar-title">Cala — Marketing &amp; Comms</div>
   <button class="hamburger" id="hamburger-btn" aria-label="Open navigation">
     <span></span><span></span><span></span>
   </button>
@@ -263,15 +414,14 @@
   <nav id="sidebar-nav">
     <ul>
       <li><a href="#overview" data-nav>Overview</a></li>
-      <li><a href="#proposition" data-nav>The Proposition</a></li>
-      <li><a class="divider-label">Part 1 — Diagnosis</a></li>
+      <li><a class="divider-label">Part 1 — Who chooses Cala</a></li>
+      <li><a href="#committee" data-nav>The Buying Committee</a></li>
+      <li><a href="#messaging" data-nav>One Message, Three Ways</a></li>
+      <li><a href="#focus" data-nav>Where to Focus</a></li>
       <li><a href="#market" data-nav>Market Landscape</a></li>
-      <li><a href="#constraints" data-nav>GTM Constraints</a></li>
-      <li><a class="divider-label">Part 2 — Design</a></li>
-      <li><a href="#segments" data-nav>Segment Priority</a></li>
-      <li><a href="#direct" data-nav>Direct Motion</a></li>
-      <li><a href="#partner" data-nav>Partner Motion</a></li>
-      <li><a href="#plan" data-nav>90-Day Plan</a></li>
+      <li><a class="divider-label">Part 2 — The plan</a></li>
+      <li><a href="#strategy" data-nav>The Strategy</a></li>
+      <li><a href="#plan" data-nav>First 90 Days</a></li>
       <li><a href="#about" data-nav>About</a></li>
       <li><a href="#next" data-nav>Next Step</a></li>
     </ul>
@@ -282,286 +432,299 @@
   <main class="content">
 
     <div class="hero">
-      <div class="eyebrow">GTM Proposal — Prepared for Cala.ai</div>
-      <h1>Where Cala wins, and how to get there.</h1>
-      <div class="byline">A GTM Proposal by Raluca Mitran · July 2026</div>
+      <div class="eyebrow">Marketing &amp; Comms proposal — prepared for Cala</div>
+      <h1>Earning trust before the sale.</h1>
+      <div class="byline">A marketing &amp; comms proposal by Raluca Mitran · October 2026</div>
     </div>
 
     <!-- ===================== OVERVIEW ===================== -->
     <section id="overview">
       <h2>Why I wrote this.</h2>
 
-      <p>I came to Cala's afterwork drinks and left genuinely impressed. The product has a unique place in the market and I haven't stopped thinking about the GTM motion since.</p>
+      <p>I came to Cala's afterwork drinks a while back and left genuinely impressed. I started writing down how I'd take Cala to market and never got round to sending it. Now that the Marketing &amp; Comms role is open, I've rebuilt it around what the role asks for: who actually chooses Cala, what each of them needs to hear, and how marketing builds the proof that gets them to yes.</p>
 
-      <p>Series A is a tough step to navigate. There's a lot to test and the team gets pulled in many directions at once. I wanted to put something together to share my thinking — the goal is simple: if it resonates, I'd love to support in whatever way makes sense, whether that's external or as part of the team.</p>
+      <p>Cala is building for agents what Bloomberg and LexisNexis became for human professionals: one graph of verified facts about every company, person, filing and regulation. It launched in June and global enterprises already run it in production. For marketing, that's a rare place to start. The product is real, the customers are real, and the story hasn't been told properly yet.</p>
 
-      <p>Cala has something rare: a verified knowledge layer that solves a problem most agent builders don't know they have until they're knee-deep in brittle pipelines. Early fintech traction, a working co-design model, MCP integrations live.</p>
+      <div class="callout">Cala's buyers want substance over spin. So marketing's job isn't to make Cala sound bigger. It's to make what's already true impossible to miss.</div>
 
-      <div class="callout">At Series A, that's tough to manage and hard to know what to test first. This is my take on where to start.</div>
+      <p>What follows: the buying committee and how to talk to each person on it, where to focus first, a strategy built on three questions (one for each stage of the funnel), and a first 90 days.</p>
+    </section>
 
-      <p>What follows is a diagnostic of the market, three questions I'd prioritise for H2, and a two-track growth motion — direct and partner — that a lean team can actually execute.</p>
+    <div class="part-label">Part 1 — Who chooses Cala</div>
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== BUYING COMMITTEE ===================== -->
+    <section id="committee">
+      <h2>The buying committee.</h2>
+
+      <p>Cala's customers are companies: banks, asset managers, fintechs and the teams building AI products inside them. In those companies, nobody buys Cala on their own. Three people get involved, each with a different question, and a deal moves only when all three <span class="underline-word" id="sequencing-word">get an answer<svg viewBox="0 0 150 14"><path d="M2,8 C28,2 65,12 95,6 C112,2 138,10 148,5"/></svg></span>.</p>
+
+      <div class="card-grid cols-3">
+        <div class="card">
+          <div class="role-tag">Champion</div>
+          <h4>Technical teams</h4>
+          <p class="who">AI/ML engineers, data engineers, platform teams building agents</p>
+          <p class="q">"Does this work in my stack, and is it better than what I'd build myself?"</p>
+          <p><strong>Proof they need:</strong> connected over MCP or the API in minutes, typed results, coverage of the sources they need, accuracy and token use compared with web search.</p>
+          <p><strong>Assets:</strong> quickstarts, benchmark write-up with its methodology, technical articles, the free playground.</p>
+        </div>
+        <div class="card">
+          <div class="role-tag">Gatekeeper</div>
+          <h4>Data leaders</h4>
+          <p class="who">CDOs, heads of data, data governance and architecture</p>
+          <p class="q">"Can I trust this data, govern it and defend it to risk and audit?"</p>
+          <p><strong>Proof they need:</strong> source and lineage on every fact, validity over time, coverage by market, how Cala fits with the Bloomberg or LSEG licences they already pay for.</p>
+          <p><strong>Assets:</strong> provenance whitepaper, data-coverage one-pager, security and SLA pack.</p>
+        </div>
+        <div class="card">
+          <div class="role-tag">Budget owner</div>
+          <h4>Business decision-makers</h4>
+          <p class="who">Innovation leads, heads of KYC, compliance and research</p>
+          <p class="q">"What does this change for my team, and how quickly?"</p>
+          <p><strong>Proof they need:</strong> time to get an AI use case into production, analyst hours saved per review, output that holds up in an audit.</p>
+          <p><strong>Assets:</strong> business case per use case, customer stories, ROI one-pager, executive roundtables.</p>
+        </div>
+      </div>
+
+      <p>In practice the engineer usually tests first, often on the free tier. The data leader decides whether it's allowed in. The business owner decides whether it gets funded. Marketing has to serve all three, and give the champion what they need to sell Cala internally to the other two.</p>
+
+      <div class="callout">The free tier is also an enterprise signal. When an engineer from a target bank signs up, sales should know that day.</div>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
 
-    <!-- ===================== THE PROPOSITION ===================== -->
-    <section id="proposition">
-      <h2>Where Cala is positioned uniquely.</h2>
+    <!-- ===================== MESSAGING ===================== -->
+    <section id="messaging">
+      <h2>One message, three ways to say it.</h2>
 
-      <p>Two ways to frame the same product — depending on who's in the room.</p>
+      <p>The core idea stays the same for every audience. What changes is which proof comes first.</p>
 
-      <h3>Outcome Driven — What You Get</h3>
+      <div class="tagline">Your agent is only as good as what it knows. Cala makes sure it knows what's true, and where it came from.</div>
+
       <table>
-        <thead><tr><th>Outcome</th><th>What It Means</th></tr></thead>
+        <thead><tr><th>Audience</th><th>Lead with</th><th>How it sounds</th></tr></thead>
         <tbody>
-          <tr><td><strong>Efficiency</strong></td><td>Fewer tokens consumed, no parsing overhead, faster outputs. The savings compound — the bigger the agent, the bigger the gain.</td></tr>
-          <tr><td><strong>Semantic accuracy</strong></td><td>Agents reason over structured meaning, not raw text. The data has already been interpreted — so the agent spends its context on thinking, not cleaning.</td></tr>
-          <tr><td><strong>Verifiability</strong></td><td>Every fact is source-traced. Outputs are citable, auditable, defensible. Not "the model said so" — but "here's where it came from."</td></tr>
+          <tr>
+            <td><strong>Engineers &amp; data teams</strong></td>
+            <td>Less work, better output</td>
+            <td>Skip the data pipeline. One endpoint, typed results, every fact sourced. Your agent spends its context on reasoning, not on cleaning up web pages.</td>
+          </tr>
+          <tr>
+            <td><strong>CDOs &amp; heads of data</strong></td>
+            <td>Governance and lineage</td>
+            <td>Every fact carries its source and the period it's valid for. Data your agents can use and your auditors can trace, alongside the sources you already license.</td>
+          </tr>
+          <tr>
+            <td><strong>Innovation &amp; business leads</strong></td>
+            <td>Speed to a defensible outcome</td>
+            <td>Put AI into KYC, due diligence and risk without putting your name behind a hallucination. From pilot to production on verified data.</td>
+          </tr>
         </tbody>
       </table>
 
-      <h3>Buyer Targeted — Who You're Talking To</h3>
-      <table>
-        <thead><tr><th>Buyer</th><th>The Pitch</th></tr></thead>
-        <tbody>
-          <tr><td><strong>For builders</strong></td><td>Developers and technical founders care about token costs, pipeline complexity, and agent reliability. Skip the data layer entirely — query structured, pre-verified knowledge directly and spend your context on reasoning, not retrieval.</td></tr>
-          <tr><td><strong>For operators</strong></td><td>Product leads, analysts, and compliance teams care about whether they can trust the output. Analysis and agent decisions grounded in verified, source-traced data — not hallucinated summaries. Put your name on it.</td></tr>
-        </tbody>
-      </table>
-      <div class="tagline">Your agent is only as good as what it knows.</div>
-
-      <div class="callout">Overview of USPs I'd focus on for a horizontal GTM motion. Test between these, see which one wins, and for which market.</div>
+      <p>These are starting points, not finished copy. I'd test them in sales conversations and ABM before locking anything, and rewrite them in the customers' own words.</p>
     </section>
 
-    <div class="part-label">Part 1 — Diagnosis</div>
+    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+
+    <!-- ===================== FOCUS ===================== -->
+    <section id="focus">
+      <h2>Where to focus: finance first, pharma next.</h2>
+
+      <p>Finance already has the coverage, the demos and the customers. Within finance, I'd lead with the workflows where "here's the source" is a regulatory requirement rather than a nice-to-have.</p>
+
+      <table>
+        <thead><tr><th>Use case</th><th>Who owns the problem</th><th>Why it lands</th></tr></thead>
+        <tbody>
+          <tr><td><span class="priority-dot lead"></span><strong>KYC, AML &amp; sanctions</strong></td><td>Heads of financial crime and compliance operations</td><td>The audit trail is mandatory, manual reviews are expensive, and ownership chains are hard to trace by hand.</td></tr>
+          <tr><td><span class="priority-dot lead"></span><strong>Adverse media screening</strong></td><td>Compliance and onboarding leads</td><td>When every hit comes with its source, analysts can clear it faster and defend the decision.</td></tr>
+          <tr><td><span class="priority-dot build"></span><strong>Commercial due diligence &amp; entity watch</strong></td><td>Corporate banking, credit risk</td><td>A full picture of a counterparty before the deal, and alerts when something changes afterwards.</td></tr>
+          <tr><td><span class="priority-dot build"></span><strong>Fund benchmarking &amp; research</strong></td><td>Asset-manager research and innovation teams</td><td>Reports that took analysts days, built from verified sources an agent can query.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pharma</h3>
+      <p>Pharma is the second vertical in the brief. Before making noise there, I'd agree with product what coverage exists (regulatory filings, trial registries, company and ownership data) and find one design partner. Marketing should follow the data coverage, not run ahead of it.</p>
+
+      <h3>Geography</h3>
+      <p>Barcelona gives Cala a home-market advantage in Spain, where BORME and CNMV data is already covered. Combined with the UK and US sources, that makes Spain, the UK and the US the natural first account lists, aligned with where sales already sells.</p>
+    </section>
+
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
 
     <!-- ===================== MARKET LANDSCAPE ===================== -->
     <section id="market">
-      <h2>Market Landscape</h2>
+      <h2>Market landscape.</h2>
 
-      <p>In all honesty, this is based on quick research and I'm likely missing some direct players. What I do know is that in EMEA, the competition isn't as tough as the US. That alone is a reason to move fast here before it is.</p>
+      <p>In an enterprise deal, Cala is compared with three alternatives, and the messaging has to hold up against each of them.</p>
 
       <table>
-        <thead><tr><th>Player</th><th>Angle</th><th>Cala's Edge</th></tr></thead>
+        <thead><tr><th>Alternative</th><th>Examples</th><th>Cala's edge</th></tr></thead>
         <tbody>
-          <tr><td>Linkup</td><td>Real-time web search for agents</td><td>Structure and verification vs. raw search</td></tr>
-          <tr><td>Glean</td><td>Internal enterprise knowledge</td><td>Different lane — world data vs. company data</td></tr>
-          <tr><td>Google Vertex</td><td>Hyperscaler grounding</td><td>Specialisation and independence</td></tr>
-          <tr><td>Perplexity API</td><td>Fast answers, developer adoption</td><td>Data quality and traceability</td></tr>
+          <tr><td><strong>Incumbent data providers</strong></td><td>Bloomberg, LSEG, S&amp;P Capital IQ, Moody's, LexisNexis</td><td>Built for humans at a terminal. Cala is built for agents: one endpoint, typed facts, a connected graph. Cala can also sit on top of those licences rather than replace them.</td></tr>
+          <tr><td><strong>Agent search APIs</strong></td><td>Linkup, Exa, Tavily, Perplexity API</td><td>They return ranked web pages. Cala returns verified facts with their source and validity.</td></tr>
+          <tr><td><strong>Build it in-house</strong></td><td>The bank's own data and AI teams</td><td>Hundreds of sources to parse, reconcile and keep fresh, forever. Cala turns that into a single API call.</td></tr>
         </tbody>
       </table>
 
-      <div class="callout">Nobody owns "verified, structured public world knowledge for AI agents" as a category yet. That's the lane.</div>
+      <div class="callout">In most enterprise deals, the real competitor is the internal team that thinks it can build this. Content should make the cost of building it visible.</div>
+
+      <p class="muted">Note on positioning: Cala lists Bloomberg and LSEG among its enterprise sources. That supports "the layer your agents use on top of the data you already trust" rather than "replace your data vendor", which is an easier message for a CDO to accept.</p>
     </section>
 
+    <div class="part-label">Part 2 — The plan</div>
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
 
-    <!-- ===================== GTM CONSTRAINTS ===================== -->
-    <section id="constraints">
-      <h2>GTM Strategy</h2>
+    <!-- ===================== STRATEGY ===================== -->
+    <section id="strategy">
+      <h2>The strategy: three questions.</h2>
 
-      <p>If I had a magic wand and could be supporting Cala's team for H2 — here are the questions I'd try to answer.</p>
+      <p>I'd organise the work around three questions, one for each stage of the funnel. All three start on day one. The time frame shows when each stage's numbers start to mean something, given how long enterprise deals take.</p>
 
-      <table>
-        <thead><tr><th>Question</th><th>Context</th><th>What Unlocks</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>What part of financial services should we focus on first?</strong></td>
-            <td>There is traction and provability in finance. Which sub-vertical does the product respond best to — compliance, risk, investment? How do we scale that content and expand across the competitive landscape?</td>
-            <td>A repeatable sales motion built on real proof, not assumptions</td>
-          </tr>
-          <tr>
-            <td><strong>Which segment do we go after next?</strong></td>
-            <td>If finance works, how do we expand smartly. Test a horizontal approach — what travels further, outcome-driven messaging (efficiency, accuracy) or purpose-driven (build better agents, get better analysis)?</td>
-            <td>A GTM language that works across verticals without rebuilding the pitch every time</td>
-          </tr>
-          <tr>
-            <td><strong>How do we build brand momentum?</strong></td>
-            <td>There is content waiting to be made from high-touch events and co-design sessions. Hackathons as content factories. User-generated use cases as the distribution engine.</td>
-            <td>A brand that compounds without a large team behind it</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout">Building GTM is tough. There's a lot of testing and you can lose yourself in it. That's why I always try to have a north star that anchors me.</div>
-    </section>
-
-    <div class="part-label">Part 2 — Design</div>
-    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
-
-    <!-- ===================== SEGMENT PRIORITY ===================== -->
-    <section id="segments">
-      <h2>Buying Groups</h2>
-
-      <p>Three tiers exist. The question is <span class="underline-word" id="sequencing-word">sequencing<svg viewBox="0 0 150 14"><path d="M2,8 C28,2 65,12 95,6 C112,2 138,10 148,5"/></svg></span> — not which to ignore, but which to win first.</p>
-
-      <table>
-        <thead><tr><th>Segment</th><th>ACV</th><th>Win Feasibility</th><th>Strategic Role</th><th>Priority</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>Developers &amp; startups</strong> (FinServ first)</td>
-            <td>€5–20k</td>
-            <td>High — traction exists</td>
-            <td>Generates case studies for enterprise</td>
-            <td><span class="priority-dot lead"></span>Lead</td>
-          </tr>
-          <tr>
-            <td><strong>Enterprise CTOs</strong> (UK FinServ first)</td>
-            <td>€50–150k</td>
-            <td>Medium — long cycle</td>
-            <td>High-value expansion from dev proof points</td>
-            <td><span class="priority-dot build"></span>Build toward</td>
-          </tr>
-          <tr>
-            <td><strong>Solo builders</strong> (Global)</td>
-            <td>&lt;€1k</td>
-            <td>High — low friction</td>
-            <td>Community signal and developer advocacy</td>
-            <td><span class="priority-dot maintain"></span>Maintain</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p>The logic: developer traction in FinServ produces the co-design case studies that open enterprise doors. Win the bottom of the funnel first — it funds the top.</p>
-    </section>
-
-    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
-
-    <!-- ===================== DIRECT MOTION ===================== -->
-    <section id="direct">
-      <h2>Track A — Direct Motion</h2>
-
-      <p>Two phases. The first 60 days are entirely focused on finance. Days 61–90 is a fork the market decides for you.</p>
-
-      <h3>Days 1–60 — Go Fully Vertical</h3>
-
-      <div class="card-grid cols-2">
-        <div class="card">
-          <h4>Build the Audience</h4>
-          <ul>
-            <li>ICP list: every retail bank, fintech, asset manager, compliance team building AI agents in UK and Spain</li>
-            <li>Audience mapping per account: CTO, engineering lead, compliance lead</li>
-            <li>Outreach infrastructure: CRM, sequences, tracking</li>
-          </ul>
+      <div class="stage">
+        <div class="stage-head">
+          <span class="stage-label">Top of funnel</span>
+          <span class="stage-meta">Objective: earn attention · Measured at 30–60 days</span>
         </div>
-        <div class="card">
-          <h4>Set Up the Motion</h4>
-          <ul>
-            <li>Content pillars locked: efficiency and semantic accuracy</li>
-            <li>Touchpoints per audience: outreach, LinkedIn, developer communities, events, partner intros</li>
-            <li>Test outcome-driven vs. purpose-driven messaging variants</li>
-            <li>Open co-design conversations with 5–10 target accounts</li>
-            <li>Draft first case study from existing fintech co-design</li>
-            <li>Sharpen /finance landing page</li>
-          </ul>
+        <div class="stage-q">How do we make Cala known in finance and pharma?</div>
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Cover the basics</h4>
+            <ul>
+              <li>Audit how Cala shows up in AI search: track 25 questions buyers ask ChatGPT, Claude and Perplexity, such as "verified company data for KYC agents"</li>
+              <li>Pitch fintech, AI and data trade press, plus founder bylines and podcasts</li>
+              <li>Run one content calendar across LinkedIn (company and founders), blog, newsletter and email. Add paid once the message is tested</li>
+            </ul>
+            <h4 class="sub">Expand</h4>
+            <ul>
+              <li>Run our own webinar series and speak at finance and AI-engineering events</li>
+              <li>Creator partnerships: AI builders on YouTube, X and LinkedIn for engineers; fintech newsletters and analysts for business buyers</li>
+            </ul>
+          </div>
+          <div class="card metrics">
+            <h4>Metrics</h4>
+            <ul>
+              <li>AI search visibility: share of tracked questions where Cala is mentioned or cited</li>
+              <li>Press placements and bylines landed</li>
+              <li>LinkedIn reach and followers from target accounts</li>
+              <li>Website visits from target accounts</li>
+              <li>Free-tier sign-ups with a company email address</li>
+              <li>Newsletter subscribers</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="tagline">One goal by Day 60: finance is a machine, not an experiment.</div>
-
-      <h3>Days 61–90 — Brand Engine vs. Horizontal Testing</h3>
-
-      <div class="card-grid cols-2">
-        <div class="card">
-          <h4>Option A — Brand Engine</h4>
-          <ul>
-            <li>Hackathons as content factories: every build becomes a use case, a demo, a story</li>
-            <li>UGC flywheel: builders show up, build something real, share it, attract more builders</li>
-            <li>Turn users into the GTM motion</li>
-          </ul>
+      <div class="stage">
+        <div class="stage-head">
+          <span class="stage-label">Middle of funnel</span>
+          <span class="stage-meta">Objective: build trust · Measured at 90 days</span>
         </div>
-        <div class="card">
-          <h4>Option B — Horizontal Test</h4>
-          <ul>
-            <li>Don't pick a new vertical yet. Test which message travels.</li>
-            <li>Outcome-driven (efficiency, accuracy) vs. purpose-driven (build better agents, get better analysis)</li>
-            <li>Run both against Legal, Healthcare, HR</li>
-            <li>Whichever lands first becomes the horizontal GTM language</li>
-          </ul>
+        <div class="stage-q">How do we get our ideal customers to trust us?</div>
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Actions</h4>
+            <ul>
+              <li>Case studies with customers already in production, and customer wins announced with their approval</li>
+              <li>A whitepaper for each audience: data provenance for CDOs, and the real cost of building in-house for engineering leaders</li>
+              <li>A benchmark with published methodology: accuracy and tokens compared with web search</li>
+              <li>Industry blog: how KYC, AML and due diligence change when agents do the work</li>
+              <li>Partnership rollout: co-marketing with integration partners (n8n, LangChain, MCP clients), and conversations with consultancies and systems integrators that build AI for banks</li>
+            </ul>
+          </div>
+          <div class="card metrics">
+            <h4>Metrics</h4>
+            <ul>
+              <li>Proof assets live: for example 2 case studies, 1 whitepaper, 1 benchmark</li>
+              <li>Target accounts engaged, and how many of the three buying roles are engaged in each</li>
+              <li>Free-tier activation: sign-ups who connect through MCP or the API and keep querying</li>
+              <li>Marketing content used by sales in live deals</li>
+              <li>MQL to SQL conversion rate</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="tagline">The signal from Day 60 makes this decision. Not today.</div>
-    </section>
+      <div class="stage">
+        <div class="stage-head">
+          <span class="stage-label">Bottom of funnel</span>
+          <span class="stage-meta">Objective: win business · Measured at 180 days</span>
+        </div>
+        <div class="stage-q">How do we convert?</div>
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Actions</h4>
+            <ul>
+              <li>A lead-gen tool built on Cala itself: a sourced KYC profile of any company, generated instantly. It shows the product and captures the lead in one step</li>
+              <li>Hands-on workshops: build a KYC agent with your team in 90 minutes</li>
+              <li>Nurture and follow-up workflows for each role, triggered by product use and content engagement</li>
+              <li>ABM messaging with sales for engineers and data teams, and for CDOs, heads of data and innovation leads</li>
+              <li>Lead-scoring model: fit (target account, role) plus intent (product use, pricing page visits, webinars, content)</li>
+            </ul>
+          </div>
+          <div class="card metrics">
+            <h4>Metrics</h4>
+            <ul>
+              <li>Pipeline sourced and influenced by marketing (€), and number of opportunities</li>
+              <li>Free-tier to enterprise conversions</li>
+              <li>Win rate and sales-cycle length for accounts marketing engaged, compared with those it didn't</li>
+              <li>Share of high-scoring leads that sales accepts</li>
+              <li>Leads generated, as an early signal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-    <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
+      <div class="callout">I'd measure a baseline for every metric in the first two weeks and agree targets with the CEO and sales, rather than invent them from the outside.</div>
 
-    <!-- ===================== PARTNER MOTION ===================== -->
-    <section id="partner">
-      <h2>Track B — Partner Motion</h2>
-
-      <p>Partners are worth planting the seed for now, even if the full motion comes later. At Series A, the right two or three partners can open doors that would take years to build directly.</p>
-
-      <h3>Three-Way Value Framing</h3>
-      <table>
-        <thead><tr><th>Party</th><th>What They Get</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Cala gets</strong></td><td>Enterprise reach without headcount. Credibility transfer. Geographic coverage. Co-design cases become repeatable playbooks.</td></tr>
-          <tr><td><strong>Partner gets</strong></td><td>A differentiated AI offering. New resell revenue stream. Stickier client relationships. First-mover advantage in their vertical before competitors embed Cala.</td></tr>
-          <tr><td><strong>End client gets</strong></td><td>A battle-tested solution, not a pilot. Reduced implementation risk. Faster time to value via a partner who already knows the product.</td></tr>
-        </tbody>
-      </table>
-
-      <div class="callout">Partners aren't a channel for today. But identifying the right two or three now means they're ready when the direct motion has proof behind it.</div>
+      <h3>Under all three: brand</h3>
+      <p>The same tone of voice, visual identity and guidelines across the website, decks, events, social and swag, built on "substance over spin": no claim without a number or a source. Cala's promise is verification, and its marketing should work the same way.</p>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
 
     <!-- ===================== 90-DAY PLAN ===================== -->
     <section id="plan">
-      <h2>90-Day Plan</h2>
+      <h2>First 90 days.</h2>
 
-      <div class="phase-grid cols-3">
-        <div class="phase" data-phase="1">
-          <div class="phase-head"><h4>Days 1–30</h4><span class="phase-count">0 / 6 complete</span></div>
-          <div class="phase-objective">Finance: foundations</div>
-          <div class="progress-track"><div class="progress-fill"></div></div>
-          <ul>
-            <li><input type="checkbox" id="d1-0"><label for="d1-0">Build ICP list</label></li>
-            <li><input type="checkbox" id="d1-1"><label for="d1-1">Map audiences</label></li>
-            <li><input type="checkbox" id="d1-2"><label for="d1-2">Set up outreach infrastructure</label></li>
-            <li><input type="checkbox" id="d1-3"><label for="d1-3">Lock content pillars</label></li>
-            <li><input type="checkbox" id="d1-4"><label for="d1-4">Sharpen /finance page</label></li>
-            <li><input type="checkbox" id="d1-5"><label for="d1-5">Identify 3–5 potential partners</label></li>
-          </ul>
+      <p>The initiatives from the strategy, laid out over three months and grouped by the question each one answers. Pick a month, open an item to see what it involves, and tick it off when it ships.</p>
+
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+          <filter id="ink-rough"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+          <filter id="ink-smudge" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9"/><feGaussianBlur stdDeviation="3.2"/></filter>
+        </defs>
+      </svg>
+
+      <div class="cal" id="tracker">
+        <div class="cal-tabs" role="tablist" aria-label="Plan month">
+          <button class="cal-tab" role="tab" data-phase="0"><span class="cal-tab-month">Month 1</span><span class="cal-tab-days">Days 1–30 · <span class="cal-tab-count"></span></span></button>
+          <button class="cal-tab" role="tab" data-phase="1"><span class="cal-tab-month">Month 2</span><span class="cal-tab-days">Days 31–60 · <span class="cal-tab-count"></span></span></button>
+          <button class="cal-tab" role="tab" data-phase="2"><span class="cal-tab-month">Month 3</span><span class="cal-tab-days">Days 61–90 · <span class="cal-tab-count"></span></span></button>
         </div>
-        <div class="phase" data-phase="2">
-          <div class="phase-head"><h4>Days 31–60</h4><span class="phase-count">0 / 5 complete</span></div>
-          <div class="phase-objective">Finance: turn every stone</div>
-          <div class="progress-track"><div class="progress-fill"></div></div>
-          <ul>
-            <li><input type="checkbox" id="d2-0"><label for="d2-0">Touchpoints live</label></li>
-            <li><input type="checkbox" id="d2-1"><label for="d2-1">Test messaging variants</label></li>
-            <li><input type="checkbox" id="d2-2"><label for="d2-2">Open co-design conversations</label></li>
-            <li><input type="checkbox" id="d2-3"><label for="d2-3">Draft first case study</label></li>
-            <li><input type="checkbox" id="d2-4"><label for="d2-4">Open partner conversations</label></li>
-          </ul>
-        </div>
-        <div class="phase" data-phase="3">
-          <div class="phase-head"><h4>Days 61–90</h4></div>
-          <div class="fork-note">One decision, full commitment. Which way are you leaning?</div>
-          <div class="fork-option" id="fork-a" data-fork="a">
-            <div class="fork-option-head"><h4>Option A — Brand Engine</h4><span class="fork-check"></span></div>
-            <ul>
-              <li>Hackathons as content factories</li>
-              <li>UGC flywheel drives distribution</li>
-              <li>Turn users into the GTM motion</li>
-            </ul>
+
+        <div class="cal-body">
+          <div class="cal-sheet">
+            <div class="cal-sheet-head">
+              <div class="cal-objective" id="cal-objective"></div>
+              <div class="cal-legend">
+                <span><i class="blob t-attention"></i>Earn attention</span>
+                <span><i class="blob t-trust"></i>Build trust</span>
+                <span><i class="blob t-business"></i>Win business</span>
+              </div>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
           </div>
-          <div class="fork-or">— or —</div>
-          <div class="fork-option" id="fork-b" data-fork="b">
-            <div class="fork-option-head"><h4>Option B — Horizontal Test</h4><span class="fork-check"></span></div>
-            <ul>
-              <li>Test outcome- vs. purpose-driven messaging</li>
-              <li>Run both against Legal, Healthcare, HR</li>
-              <li>Winner becomes the horizontal language</li>
-            </ul>
+
+          <div class="cal-detail">
+            <div class="cal-art" id="cal-art"></div>
+            <div class="todo-head"><span class="todo-head-title">To do</span><span class="todo-head-count" id="todo-count"></span></div>
+            <ul class="todo" id="todo"></ul>
           </div>
         </div>
       </div>
 
-      <div class="callout">Days 1–60: one vertical, every stone turned. Days 61–90: one decision, full commitment.</div>
+      <div class="callout">By day 90, every audience has a clear answer and sales has the material to use it. By day 180, we can see in the pipeline which of it worked.</div>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
@@ -570,9 +733,11 @@
     <section id="about">
       <h2>About</h2>
 
-      <p>I'm Romanian, grew up between Bucharest and Amsterdam, and have been based in Barcelona for the last few years. I've spent that time inside a company that went through two M&amp;A events in three years. Each time, I rebuilt the GTM motion from scratch inside a new org with new rules. It's the best training I know for early-stage work — you learn fast that the plan is always wrong and execution is everything. Along the way I've helped influence over <u>€400M in pipeline</u>.</p>
+      <p>I'm Romanian, grew up between Bucharest and Amsterdam, and have been based in Barcelona for the last few years. I lead B2B marketing for enterprise buyers, inside a company that went through two M&amp;A events in three years. Each time, I rebuilt the go-to-market motion from scratch inside a new organisation with new rules. It's the best training I know for early-stage work: you learn fast that the plan is always wrong and execution is everything. Along the way I've helped influence over <u>€400M in pipeline</u>.</p>
 
-      <p>Outside of that I ran a food magazine in Barcelona and events teaching people to become more resilient with their food. Think meal prepping with your friends. Completely unrelated, but wanted to share.</p>
+      <p>I use AI agents every day. I built this page, my landing pages and my own custom Claude skills with Claude Code, so I know first-hand what an agent does with clean data and what it does with messy data.</p>
+
+      <p>Outside of work, I ran a food magazine in Barcelona and events teaching people to become more resilient with their food. Think meal prepping with your friends. Completely unrelated, but I wanted to share.</p>
     </section>
 
     <div class="divider"><svg width="600" height="24" viewBox="0 0 600 24"><path d="M0,12 C50,2 100,22 150,12 C200,2 250,22 300,12 C350,2 400,22 450,12 C500,2 550,22 600,12"/></svg></div>
@@ -581,9 +746,9 @@
     <section id="next">
       <h2>Next Step</h2>
 
-      <p>The thinking here is grounded in what I observed — but the people closest to the product and customers always know more than an outside view can.</p>
+      <p>This is an outside view. The people closest to the product and the customers will know things I don't, and I'd expect to change half of it after the first ten sales calls.</p>
 
-      <p>If this resonates, I would love to have a chat together and see if we can collaborate. In any case, what you guys are doing is great, and getting the size of this Series A is incredible — keep it up!</p>
+      <p>If it resonates, I'd love to talk about the Marketing &amp; Comms role. Either way, what you're building is great. Keep going!</p>
 
       <div class="signature">
         <div class="sig-name">Raluca Mitran</div>
@@ -592,7 +757,7 @@
       </div>
     </section>
 
-    <footer>GTM proposal prepared July 2026</footer>
+    <footer>Marketing &amp; comms proposal prepared October 2026</footer>
 
   </main>
 </div>
@@ -668,48 +833,198 @@
   }, { threshold: 0.8 });
   seqObserver.observe(seqWord);
 
-  // 90-day checklist with localStorage
-  document.querySelectorAll('.phase').forEach(phase => {
-    const checkboxes = phase.querySelectorAll('input[type=checkbox]');
-    if (checkboxes.length === 0) return;
-    const fill = phase.querySelector('.progress-fill');
-    const count = phase.querySelector('.phase-count');
-    const total = checkboxes.length;
+  // 90-day calendar: month tabs, milestone days, hand-drawn art. "Done" marks are saved per viewer.
+  (function(){
+    const TAGS = {
+      foundation:{ label:'Foundation', cls:'t-foundation', wash:'#e1bee6' },
+      attention:{ label:'Earn attention', cls:'t-attention', wash:'#fb9a74' },
+      trust:{ label:'Build trust', cls:'t-trust', wash:'#8fd6f7' },
+      business:{ label:'Win business', cls:'t-business', wash:'#ffd36b' }
+    };
+    // Hand-drawn doodles, viewBox 0 0 120 120. Strokes get the ink + smudge filters.
+    const ART = {
+      phone:'<path d="M34 34c-8 4-10 14-6 24 6 16 18 30 34 38 10 4 18 2 22-6L72 78c-3-2-6-2-8 1l-4 4c-10-5-17-13-21-22l4-4c3-2 3-6 1-8L38 34c-1-1-3-1-4 0z"/><path d="M70 34c8 2 14 8 16 16"/><path d="M72 20c14 3 25 14 28 28"/>',
+      people:'<circle cx="36" cy="46" r="10"/><circle cx="60" cy="38" r="12"/><circle cx="84" cy="46" r="10"/><path d="M20 84c0-14 7-22 16-22s14 6 15 12"/><path d="M40 88c0-18 8-30 20-30s20 12 20 30"/><path d="M69 74c1-6 6-12 15-12s16 8 16 22"/>',
+      bubbles:'<path d="M20 28h50c6 0 10 4 10 10v20c0 6-4 10-10 10H44L30 80l2-12h-12c-6 0-10-4-10-10V38c0-6 4-10 10-10z"/><path d="M26 44h36"/><path d="M26 54h22"/><path d="M86 52h12c6 0 10 4 10 10v16c0 6-4 10-10 10h-6l2 10-12-10H72c-6 0-10-4-10-10v-4"/>',
+      magnifier:'<circle cx="52" cy="50" r="25"/><path d="M71 69l27 27"/><path d="M40 40c4-5 10-6 15-4"/><path d="M94 18v14M87 25h14"/>',
+      chart:'<path d="M20 18v80h82"/><path d="M34 98V76h10v22"/><path d="M54 98V64h10v34"/><path d="M74 98V50h10v48"/><path d="M28 64c12-6 20-14 30-20s16-8 24-18 10-8 16-10"/><path d="M90 14l9 1-2 9"/>',
+      target:'<circle cx="56" cy="64" r="36"/><circle cx="56" cy="64" r="23"/><circle cx="56" cy="64" r="10"/><path d="M56 64L98 22"/><path d="M90 16l8 6 4 8"/><path d="M98 22l2-10 8 2"/>',
+      envelope:'<path d="M16 36c28-2 58-2 88 0 1 18 1 36 0 52-28 2-58 2-88 0-1-18-1-34 0-52z"/><path d="M16 36l44 30 44-30"/><path d="M16 88l30-24"/><path d="M104 88L74 64"/>',
+      papers:'<path d="M22 32v72h50"/><path d="M30 22h44l16 16v58H30z"/><path d="M74 22v16h16"/><path d="M40 52h38"/><path d="M40 62h38"/><path d="M40 72h26"/>',
+      pins:'<path d="M40 26c-10 0-18 8-18 18 0 14 18 32 18 32s18-18 18-32c0-10-8-18-18-18z"/><circle cx="40" cy="44" r="6"/><path d="M82 42c-8 0-14 6-14 14 0 11 14 25 14 25s14-14 14-25c0-8-6-14-14-14z"/><circle cx="82" cy="56" r="4"/><path d="M12 98c20-6 40 4 60-2s30-4 36 0"/><path d="M44 84c10 6 22 4 32-2" stroke-dasharray="3 6"/>',
+      scale:'<circle cx="60" cy="20" r="4"/><path d="M60 24v72"/><path d="M40 98h40"/><path d="M22 34c26-3 50-3 76 0"/><path d="M22 34L10 62"/><path d="M22 34l12 28"/><path d="M8 62c0 9 28 9 28 0"/><path d="M98 34L86 62"/><path d="M98 34l12 28"/><path d="M84 62c0 9 28 9 28 0"/>',
+      quote:'<path d="M28 16h52l12 14v74H28z"/><path d="M80 16v14h12"/><path d="M46 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M68 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M40 86h40"/>',
+      megaphone:'<path d="M22 50v20h14l42 24V26L36 50z"/><path d="M36 70l6 24h11l-4-22"/><path d="M90 44l14-6"/><path d="M92 60h16"/><path d="M90 76l14 6"/>',
+      brush:'<path d="M88 14L52 62"/><path d="M46 58l12 9"/><path d="M46 60c-10 2-18 10-20 22-2 8-8 12-14 14 14 4 30 2 38-8 6-8 6-16 6-20"/><path d="M20 106c22-8 52-4 84-10"/>',
+      mic:'<path d="M48 18h24v42c0 7-5 12-12 12s-12-5-12-12z"/><path d="M48 32h24"/><path d="M48 44h24"/><path d="M36 52c0 15 11 27 24 27s24-12 24-27"/><path d="M60 79v17"/><path d="M42 98h36"/>',
+      magnet:'<path d="M28 28v36c0 18 14 32 32 32s32-14 32-32V28H72v36c0 7-5 12-12 12s-12-5-12-12V28z"/><path d="M28 44h20"/><path d="M72 44h20"/><path d="M14 18l8 8"/><path d="M106 16l-8 9"/><path d="M60 6v12"/>',
+      gauge:'<path d="M18 86a42 42 0 0 1 84 0"/><path d="M27 66l7 4"/><path d="M42 50l5 6"/><path d="M60 44v9"/><path d="M78 50l-5 6"/><path d="M93 66l-7 4"/><path d="M60 86L86 56"/><circle cx="60" cy="86" r="5"/><path d="M12 96c32-3 64-3 96 0"/>',
+      capsule:'<path d="M34 76l30-30c8-8 20-8 28 0s8 20 0 28L62 104c-8 8-20 8-28 0s-8-20 0-28z"/><path d="M49 61l28 28"/><path d="M16 46c6-20 26-28 42-22-2 16-18 30-42 22z"/><path d="M16 46c12-6 22-12 32-20"/>',
+      link:'<path d="M52 46c-8-8-22-8-30 2s-6 24 4 30l8 6c10 6 22 2 28-6"/><path d="M68 74c8 8 22 8 30-2s6-24-4-30l-8-6c-10-6-22-2-28 6"/><path d="M46 66l28-12"/>',
+      trophy:'<path d="M38 20h44v26c0 14-10 24-22 24S38 60 38 46z"/><path d="M38 30H24c0 14 6 22 16 24"/><path d="M82 30h14c0 14-6 22-16 24"/><path d="M60 70v16"/><path d="M44 100c2-8 8-14 16-14s14 6 16 14z"/><path d="M54 34l4 6 6-10"/>',
+      flow:'<path d="M16 22h30v22H16z"/><path d="M74 22h30v22H74z"/><path d="M45 80h30v22H45z"/><path d="M46 33c10-2 18-2 26 0"/><path d="M66 29l6 4-6 4"/><path d="M89 44c0 16-6 26-14 36"/><path d="M74 72l1 8 7-3"/><path d="M45 91c-16 0-28-14-30-44"/><path d="M10 52l5-6 5 6"/>',
+      sprout:'<path d="M36 78h48l-6 26H42z"/><path d="M30 70c20-2 40-2 60 0v8H30z"/><path d="M60 70V38"/><path d="M60 50c-4-14-18-20-30-16 2 12 16 20 30 16z"/><path d="M60 40c4-14 18-22 32-18-2 12-18 22-32 18z"/>'
+    };
+    const WASH = '<path d="M28 40c12-18 52-22 66-4s10 52-12 60-50 4-58-14-8-26 4-42z"/>';
+    const GROUND = '<path d="M26 110c22 4 46 4 68 0"/>';
 
-    function refresh(){
-      let checked = 0;
-      checkboxes.forEach(cb => {
-        const li = cb.closest('li');
-        li.classList.toggle('checked', cb.checked);
-        if (cb.checked) checked++;
+    const PHASES = [
+      { start:1, objective:'Earn attention: cover the basics', steps:[
+        { day:5, tag:'attention', art:'magnifier', title:'Review our rank in AI search', desc:'Track the questions buyers ask ChatGPT, Claude and Perplexity, and see where Cala is mentioned or cited today.' },
+        { day:12, tag:'attention', art:'megaphone', title:'Apply for PR publications', desc:'Pitch fintech, AI and data trade press, plus founder bylines and podcasts.' },
+        { day:19, tag:'attention', art:'envelope', title:'Content calendar live', desc:'One calendar that activates every key channel: social, newsletter and email.' },
+        { day:26, tag:'trust', art:'papers', title:'Draft the first case study', desc:'Start early with a customer already in production. Case studies take the longest to approve.' }
+      ]},
+      { start:31, objective:'Expand reach, start building trust', steps:[
+        { day:34, tag:'attention', art:'chart', title:'Add paid to the calendar', desc:'Switch on paid once the messaging has been tested in sales conversations.' },
+        { day:40, tag:'attention', art:'people', title:'Influencer marketing', desc:'AI builders on YouTube, X and LinkedIn for engineers; fintech newsletters and analysts for business buyers.' },
+        { day:46, tag:'attention', art:'mic', title:'Host our first webinar or event', desc:'Pair an engineer and a compliance lead on the same use case, so both audiences attend.' },
+        { day:52, tag:'trust', art:'quote', title:'Case study, white paper & industry blogs', desc:'Proof for each audience: a customer story, a provenance white paper for data leaders, and blogs on KYC, AML and due diligence.' },
+        { day:58, tag:'trust', art:'link', title:'Partnerships rollout', desc:'Co-marketing with integration partners (n8n, LangChain, MCP clients), plus first talks with consultancies that build AI for banks.' }
+      ]},
+      { start:61, objective:'Build trust, set up conversion', steps:[
+        { day:64, tag:'trust', art:'trophy', title:'Announce customer wins', desc:'Each win becomes a news post, a LinkedIn moment and a sales email, with the customer\'s approval.' },
+        { day:70, tag:'business', art:'bubbles', title:'ABM messaging for both audiences', desc:'Engineers and data teams, and decision-makers: CDOs, heads of data and innovation leads.' },
+        { day:76, tag:'business', art:'flow', title:'Lead nurture & follow-up workflows', desc:'Sequences for each role, triggered by product use and content engagement.' },
+        { day:82, tag:'business', art:'magnet', title:'Lead-gen workshop or tool', desc:'For example, an instant sourced KYC profile of any company, built on Cala, or a hands-on "build a KYC agent" workshop.' },
+        { day:88, tag:'business', art:'gauge', title:'Lead scoring model', desc:'Fit (target account, role) plus intent (product use, pricing page visits, webinars). Ready to judge on pipeline at day 180.' }
+      ]}
+    ];
+    const TICK = '<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13c3 2 5 5 6 7 3-7 7-12 12-17" fill="none" stroke="#2e2723" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink-rough)"/></svg>';
+    const store = {
+      get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+      set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+    };
+    const key = d => 'cala-todo-done-' + d;
+    const isDone = d => store.get(key(d)) === '1';
+
+    const tabs = document.querySelectorAll('.cal-tab');
+    const grid = document.getElementById('cal-grid');
+    const $ = id => document.getElementById(id);
+    const art = $('cal-art'), todo = $('todo');
+    let phase = 0, active = 0, cells = {}, rows = [];
+
+    function counts(){
+      tabs.forEach((t,p) => {
+        const s = PHASES[p].steps;
+        t.querySelector('.cal-tab-count').textContent = s.filter(x => isDone(x.day)).length + '/' + s.length + ' done';
       });
-      fill.style.width = (checked/total*100) + '%';
-      count.textContent = checked + ' / ' + total + ' complete';
+      const s = PHASES[phase].steps;
+      $('todo-count').textContent = s.filter(x => isDone(x.day)).length + ' of ' + s.length + ' done';
     }
 
-    checkboxes.forEach(cb => {
-      const saved = localStorage.getItem('cala-90day-' + cb.id);
-      if (saved === 'true') cb.checked = true;
-      cb.addEventListener('change', () => {
-        localStorage.setItem('cala-90day-' + cb.id, cb.checked);
-        refresh();
+    function buildGrid(){
+      const P = PHASES[phase];
+      $('cal-objective').textContent = P.objective;
+      grid.innerHTML = ''; cells = {};
+      const byDay = {};
+      P.steps.forEach((s,i) => byDay[s.day] = i);
+      for (let n = 0; n < 35; n++){
+        const day = P.start + n;
+        const el = document.createElement(day in byDay ? 'button' : 'div');
+        el.className = 'cal-cell';
+        if (n >= 30){ el.classList.add('is-empty'); grid.appendChild(el); continue; }
+        if (day in byDay){
+          const i = byDay[day], s = P.steps[i];
+          el.classList.add('is-ms');
+          el.setAttribute('aria-label', 'Day ' + day + ': ' + s.title);
+          el.innerHTML = '<i class="blob ' + TAGS[s.tag].cls + '"></i><span class="num">' + day + '</span><span class="mini">' + s.title + '</span>' + TICK;
+          el.addEventListener('click', () => select(i));
+          cells[i] = el;
+        } else {
+          el.innerHTML = '<span class="num">' + day + '</span>';
+        }
+        grid.appendChild(el);
+      }
+    }
+
+    // The to-do list is grouped by the three funnel questions
+    const QUESTIONS = [
+      { tag:'attention', stage:'Top of funnel', q:'How can we make ourselves known in key verticals like finance and pharma?', objective:'Earn attention', frame:'First 30–60 days' },
+      { tag:'trust', stage:'Middle of funnel', q:'How can we convince our ideal customers to trust us?', objective:'Build trust', frame:'First 90 days' },
+      { tag:'business', stage:'Bottom of funnel', q:'How can we convert?', objective:'Win business', frame:'First 180 days' }
+    ];
+    const miniArt = s => '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + TAGS[s.tag].wash + '">' + WASH + '</g><g class="ink">' + ART[s.art] + '</g></svg>';
+
+    function buildList(){
+      todo.innerHTML = ''; rows = [];
+      const steps = PHASES[phase].steps;
+      QUESTIONS.forEach(Q => {
+        const idx = steps.map((s,i) => i).filter(i => steps[i].tag === Q.tag);
+        if (!idx.length) return;
+        const head = document.createElement('li');
+        head.className = 'todo-group';
+        head.innerHTML = '<div class="tg-stage"><i class="blob ' + TAGS[Q.tag].cls + '"></i>' + Q.stage + '</div>' +
+          '<div class="tg-q">' + Q.q + '</div>' +
+          '<div class="tg-meta"><span><b>Objective</b> ' + Q.objective + '</span><span><b>Time frame</b> ' + Q.frame + '</span></div>';
+        todo.appendChild(head);
+        idx.forEach(i => {
+          const s = steps[i];
+          const li = document.createElement('li');
+          li.className = 'todo-item';
+          li.innerHTML =
+            '<button class="todo-check" aria-label="Mark ' + s.title + ' done" aria-pressed="false">' + TICK.replace('class="tick"', '') + '</button>' +
+            '<button class="todo-main" aria-expanded="false"><span class="todo-meta">Day ' + s.day + '</span>' +
+            '<span class="todo-title">' + s.title + '</span></button>' +
+            '<span class="todo-icon">' + miniArt(s) + '</span>' +
+            '<div class="todo-desc">' + s.desc + '</div>';
+          li.querySelector('.todo-check').addEventListener('click', () => toggle(i));
+          li.querySelector('.todo-main').addEventListener('click', () => select(i));
+          li.querySelector('.todo-icon').addEventListener('click', () => select(i));
+          todo.appendChild(li);
+          rows[i] = li;
+        });
+      });
+    }
+
+    function render(animate){
+      const steps = PHASES[phase].steps, s = steps[active], t = TAGS[s.tag];
+      art.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + t.wash + '">' + WASH + '</g>' +
+        '<g class="smudge" transform="translate(3 4)">' + ART[s.art] + GROUND + '</g><g class="ink">' + ART[s.art] + '</g></svg>';
+      if (animate){ art.classList.remove('pop'); void art.offsetWidth; art.classList.add('pop'); }
+      steps.forEach((x,i) => {
+        const done = isDone(x.day), on = i === active;
+        cells[i].classList.toggle('is-active', on);
+        cells[i].classList.toggle('is-done', done);
+        rows[i].classList.toggle('is-active', on);
+        rows[i].classList.toggle('is-done', done);
+        rows[i].querySelector('.todo-check').setAttribute('aria-pressed', done);
+        rows[i].querySelector('.todo-main').setAttribute('aria-expanded', on);
+      });
+      counts();
+    }
+
+    function select(i){ active = i; render(true); }
+    function toggle(i){
+      const d = PHASES[phase].steps[i].day;
+      store.set(key(d), isDone(d) ? '0' : '1');
+      if (active !== i){ active = i; render(true); } else render(false);
+    }
+    function setPhase(p){
+      phase = p; active = 0;
+      tabs.forEach((t,n) => { t.setAttribute('aria-selected', n === p); t.tabIndex = n === p ? 0 : -1; });
+      buildGrid(); buildList(); render(true);
+    }
+
+    tabs.forEach((t,i) => {
+      t.addEventListener('click', () => setPhase(i));
+      t.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+          const n = (i + (e.key === 'ArrowRight' ? 1 : 2)) % 3; setPhase(n); tabs[n].focus();
+        }
       });
     });
-    refresh();
-  });
 
-  // Days 61-90 decision fork — click to select a leaning, persisted
-  const forkA = document.getElementById('fork-a');
-  const forkB = document.getElementById('fork-b');
-  function selectFork(choice){
-    forkA.classList.toggle('selected', choice === 'a');
-    forkB.classList.toggle('selected', choice === 'b');
-    localStorage.setItem('cala-fork-choice', choice);
-  }
-  forkA.addEventListener('click', () => selectFork('a'));
-  forkB.addEventListener('click', () => selectFork('b'));
-  const savedFork = localStorage.getItem('cala-fork-choice');
-  if (savedFork) selectFork(savedFork);
+    setPhase(0);
+
+    // The calendar is wider than the text column, so fade the floating TOC while it's on screen
+    const toc = document.getElementById('toc-panel');
+    new IntersectionObserver(entries => {
+      entries.forEach(en => toc.classList.toggle('tk-hide', en.isIntersecting));
+    }, { threshold: 0.15 }).observe(document.getElementById('tracker'));
+  })();
 </script>
+
+
 </body>
 </html>
