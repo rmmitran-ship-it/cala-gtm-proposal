@@ -400,6 +400,59 @@
   .todo-sub{list-style:none; margin:16px 0 0; font-family:"Lora", serif; font-size:17px; padding-bottom:2px;}
   .todo-sub:first-child{margin-top:6px;}
   @media (max-width:820px){ .pr-days{font-size:68px;} .pr-obj-value{font-size:26px;} .pr-left .cal-art{display:none;} }
+  /* ---------- Strategy pipeline graph ---------- */
+  .pipe{
+    --pipe-w:min(1040px, calc(100vw - 32px));
+    width:var(--pipe-w); margin:26px 0 12px calc(50% - var(--pipe-w) / 2);
+  }
+  .pipe-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border:2px solid var(--brown); border-radius:255px 12px 225px 14px / 14px 225px 12px 255px; background:var(--beige-50); padding:10px;}
+  .pipe-svg{display:block; width:100%; min-width:760px; height:auto; font-family:"DM Sans", sans-serif;}
+  .pipe-hint{display:none; font-size:12.5px; color:var(--muted); text-align:right; margin-top:6px;}
+  .pipe-band-fill{opacity:.16;}
+  .pipe-band-name{font-family:"Lora", serif; font-size:19px; fill:var(--brown);}
+  .pipe-band-frame{font-size:12.5px; fill:var(--muted); letter-spacing:.04em;}
+
+  .pipe-edge-ink{fill:none; stroke:#2e2723; stroke-width:1.8; opacity:.35; filter:url(#ink-rough); transition:opacity .25s;}
+  .pipe-edge-flow{fill:none; stroke:#2e2723; stroke-width:2.6; stroke-linecap:round; stroke-dasharray:1 16; opacity:.45; animation:pipe-flow 1.6s linear infinite;}
+  @keyframes pipe-flow{ to{ stroke-dashoffset:-34; } }
+  .pipe-edge.is-on .pipe-edge-ink{opacity:.85; stroke-width:2.4;}
+  .pipe-edge.is-on .pipe-edge-flow{opacity:.9; stroke:#b8461d;}
+  .pipe-edge.is-dim{opacity:.35;}
+
+  .pipe-node{cursor:pointer; outline:none; transition:opacity .25s;}
+  .pipe-node.is-dim{opacity:.45;}
+  .pipe-node-ring{fill:#fffdf8; stroke:#2e2723; stroke-width:2.2; filter:url(#ink-rough); transition:stroke-width .2s;}
+  .pipe-node.is-hub .pipe-node-ring{fill:rgba(255,253,248,.55); stroke-width:2.6;}
+  .pipe-hub-wash{opacity:.6; filter:url(#ink-smudge);}
+  .pipe-node-art{fill:none; stroke:#2e2723; stroke-width:6; stroke-linecap:round; stroke-linejoin:round;}
+  .pipe-node.is-hub .pipe-node-art{stroke-width:5;}
+  .pipe-node-label{font-size:13px; fill:var(--brown); font-weight:500;}
+  .pipe-hub-label{font-family:"Lora", serif; font-size:17px; fill:var(--brown);}
+  .pipe-node:hover .pipe-node-ring, .pipe-node:focus-visible .pipe-node-ring{stroke-width:3.4;}
+  .pipe-node.is-active .pipe-node-ring{stroke-width:3.6; fill:#fff;}
+
+  .pipe-detail{
+    display:grid; grid-template-columns:150px 1fr; gap:22px; align-items:start; margin-top:16px;
+    background:var(--beige-50); border:2px solid var(--brown); padding:22px 26px;
+    border-radius:14px 225px 12px 255px / 255px 12px 225px 14px;
+  }
+  .pipe-art svg{width:100%; height:auto; overflow:visible;}
+  .pipe-art .ink{fill:none; stroke:#2e2723; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; filter:url(#ink-rough);}
+  .pipe-art .smudge{fill:none; stroke:#8e8175; stroke-width:10; stroke-linecap:round; stroke-linejoin:round; opacity:.45; filter:url(#ink-smudge);}
+  .pipe-art .wash{opacity:.55; filter:url(#ink-smudge);}
+  .pipe-stage{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  .pipe-title{font-family:"Lora", serif; font-size:22px; line-height:1.3; margin:4px 0 8px;}
+  .pipe-desc{font-size:14.5px; color:var(--muted); margin-bottom:10px;}
+  .pipe-metrics{margin:0; padding-left:18px; font-size:14px;}
+  .pipe-metrics li{margin-bottom:4px;}
+
+  @media (max-width:820px){
+    .pipe-hint{display:block;}
+    .pipe-detail{grid-template-columns:1fr; padding:18px;}
+    .pipe-art{width:110px; margin:0 auto;}
+  }
+  @media (prefers-reduced-motion:reduce){ .pipe-edge-flow{animation:none;} }
+
 </style>
 
 
@@ -594,98 +647,21 @@
     <section id="strategy">
       <h2>The strategy: three questions.</h2>
 
-      <p>I'd organise the work around three questions, one for each stage of the funnel. All three start on day one. The time frame shows when each stage's numbers start to mean something, given how long enterprise deals take.</p>
+      <p>I'd organise the work as a pipeline built on three questions, one for each stage of the funnel. Each priority feeds a stage, each stage has its own metrics, and all of it flows into pipeline. All three start on day one; the time frame shows when each stage's numbers start to mean something. Click any node to see what it involves.</p>
 
-      <div class="stage">
-        <div class="stage-head">
-          <span class="stage-label">Top of funnel</span>
-          <span class="stage-meta">Objective: earn attention · Measured at 30–60 days</span>
+      <div class="pipe" id="pipe">
+        <div class="pipe-scroll">
+          <svg class="pipe-svg" id="pipe-svg" viewBox="0 0 1000 520" role="img" aria-label="Marketing pipeline: priorities feed Attention, then Trust, then Pipeline"></svg>
         </div>
-        <div class="stage-q">How do we make Cala known in finance and pharma?</div>
-        <div class="card-grid cols-2">
-          <div class="card">
-            <h4>Cover the basics</h4>
-            <ul>
-              <li>Audit how Cala shows up in AI search: track 25 questions buyers ask ChatGPT, Claude and Perplexity, such as "verified company data for KYC agents"</li>
-              <li>Pitch fintech, AI and data trade press, plus founder bylines and podcasts</li>
-              <li>Run one content calendar across LinkedIn (company and founders), blog, newsletter and email. Add paid once the message is tested</li>
-            </ul>
-            <h4 class="sub">Expand</h4>
-            <ul>
-              <li>Run our own webinar series and speak at finance and AI-engineering events</li>
-              <li>Creator partnerships: AI builders on YouTube, X and LinkedIn for engineers; fintech newsletters and analysts for business buyers</li>
-            </ul>
-          </div>
-          <div class="card metrics">
-            <h4>Metrics</h4>
-            <ul>
-              <li>AI search visibility: share of tracked questions where Cala is mentioned or cited</li>
-              <li>Press placements and bylines landed</li>
-              <li>LinkedIn reach and followers from target accounts</li>
-              <li>Website visits from target accounts</li>
-              <li>Free-tier sign-ups with a company email address</li>
-              <li>Newsletter subscribers</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        <div class="pipe-hint">Swipe to follow the pipeline →</div>
 
-      <div class="stage">
-        <div class="stage-head">
-          <span class="stage-label">Middle of funnel</span>
-          <span class="stage-meta">Objective: build trust · Measured at 90 days</span>
-        </div>
-        <div class="stage-q">How do we get our ideal customers to trust us?</div>
-        <div class="card-grid cols-2">
-          <div class="card">
-            <h4>Actions</h4>
-            <ul>
-              <li>Case studies with customers already in production, and customer wins announced with their approval</li>
-              <li>A whitepaper for each audience: data provenance for CDOs, and the real cost of building in-house for engineering leaders</li>
-              <li>A benchmark with published methodology: accuracy and tokens compared with web search</li>
-              <li>Industry blog: how KYC, AML and due diligence change when agents do the work</li>
-              <li>Partnership rollout: co-marketing with integration partners (n8n, LangChain, MCP clients), and conversations with consultancies and systems integrators that build AI for banks</li>
-            </ul>
-          </div>
-          <div class="card metrics">
-            <h4>Metrics</h4>
-            <ul>
-              <li>Proof assets live: for example 2 case studies, 1 whitepaper, 1 benchmark</li>
-              <li>Target accounts engaged, and how many of the three buying roles are engaged in each</li>
-              <li>Free-tier activation: sign-ups who connect through MCP or the API and keep querying</li>
-              <li>Marketing content used by sales in live deals</li>
-              <li>MQL to SQL conversion rate</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="stage">
-        <div class="stage-head">
-          <span class="stage-label">Bottom of funnel</span>
-          <span class="stage-meta">Objective: win business · Measured at 180 days</span>
-        </div>
-        <div class="stage-q">How do we convert?</div>
-        <div class="card-grid cols-2">
-          <div class="card">
-            <h4>Actions</h4>
-            <ul>
-              <li>A lead-gen tool built on Cala itself: a sourced KYC profile of any company, generated instantly. It shows the product and captures the lead in one step</li>
-              <li>Hands-on workshops: build a KYC agent with your team in 90 minutes</li>
-              <li>Nurture and follow-up workflows for each role, triggered by product use and content engagement</li>
-              <li>ABM messaging with sales for engineers and data teams, and for CDOs, heads of data and innovation leads</li>
-              <li>Lead-scoring model: fit (target account, role) plus intent (product use, pricing page visits, webinars, content)</li>
-            </ul>
-          </div>
-          <div class="card metrics">
-            <h4>Metrics</h4>
-            <ul>
-              <li>Pipeline sourced and influenced by marketing (€), and number of opportunities</li>
-              <li>Free-tier to enterprise conversions</li>
-              <li>Win rate and sales-cycle length for accounts marketing engaged, compared with those it didn't</li>
-              <li>Share of high-scoring leads that sales accepts</li>
-              <li>Leads generated, as an early signal</li>
-            </ul>
+        <div class="pipe-detail" aria-live="polite">
+          <div class="pipe-art" id="pipe-art"></div>
+          <div class="pipe-text">
+            <div class="pipe-stage" id="pipe-stage"></div>
+            <div class="pipe-title" id="pipe-title"></div>
+            <p class="pipe-desc" id="pipe-desc"></p>
+            <ul class="pipe-metrics" id="pipe-metrics"></ul>
           </div>
         </div>
       </div>
@@ -775,6 +751,152 @@
 </div>
 
 <script>
+  // Hand-drawn doodles shared by the pipeline graph and the priorities list (viewBox 0 0 120 120)
+    const ART = {
+      phone:'<path d="M34 34c-8 4-10 14-6 24 6 16 18 30 34 38 10 4 18 2 22-6L72 78c-3-2-6-2-8 1l-4 4c-10-5-17-13-21-22l4-4c3-2 3-6 1-8L38 34c-1-1-3-1-4 0z"/><path d="M70 34c8 2 14 8 16 16"/><path d="M72 20c14 3 25 14 28 28"/>',
+      people:'<circle cx="36" cy="46" r="10"/><circle cx="60" cy="38" r="12"/><circle cx="84" cy="46" r="10"/><path d="M20 84c0-14 7-22 16-22s14 6 15 12"/><path d="M40 88c0-18 8-30 20-30s20 12 20 30"/><path d="M69 74c1-6 6-12 15-12s16 8 16 22"/>',
+      bubbles:'<path d="M20 28h50c6 0 10 4 10 10v20c0 6-4 10-10 10H44L30 80l2-12h-12c-6 0-10-4-10-10V38c0-6 4-10 10-10z"/><path d="M26 44h36"/><path d="M26 54h22"/><path d="M86 52h12c6 0 10 4 10 10v16c0 6-4 10-10 10h-6l2 10-12-10H72c-6 0-10-4-10-10v-4"/>',
+      magnifier:'<circle cx="52" cy="50" r="25"/><path d="M71 69l27 27"/><path d="M40 40c4-5 10-6 15-4"/><path d="M94 18v14M87 25h14"/>',
+      chart:'<path d="M20 18v80h82"/><path d="M34 98V76h10v22"/><path d="M54 98V64h10v34"/><path d="M74 98V50h10v48"/><path d="M28 64c12-6 20-14 30-20s16-8 24-18 10-8 16-10"/><path d="M90 14l9 1-2 9"/>',
+      target:'<circle cx="56" cy="64" r="36"/><circle cx="56" cy="64" r="23"/><circle cx="56" cy="64" r="10"/><path d="M56 64L98 22"/><path d="M90 16l8 6 4 8"/><path d="M98 22l2-10 8 2"/>',
+      envelope:'<path d="M16 36c28-2 58-2 88 0 1 18 1 36 0 52-28 2-58 2-88 0-1-18-1-34 0-52z"/><path d="M16 36l44 30 44-30"/><path d="M16 88l30-24"/><path d="M104 88L74 64"/>',
+      papers:'<path d="M22 32v72h50"/><path d="M30 22h44l16 16v58H30z"/><path d="M74 22v16h16"/><path d="M40 52h38"/><path d="M40 62h38"/><path d="M40 72h26"/>',
+      pins:'<path d="M40 26c-10 0-18 8-18 18 0 14 18 32 18 32s18-18 18-32c0-10-8-18-18-18z"/><circle cx="40" cy="44" r="6"/><path d="M82 42c-8 0-14 6-14 14 0 11 14 25 14 25s14-14 14-25c0-8-6-14-14-14z"/><circle cx="82" cy="56" r="4"/><path d="M12 98c20-6 40 4 60-2s30-4 36 0"/><path d="M44 84c10 6 22 4 32-2" stroke-dasharray="3 6"/>',
+      scale:'<circle cx="60" cy="20" r="4"/><path d="M60 24v72"/><path d="M40 98h40"/><path d="M22 34c26-3 50-3 76 0"/><path d="M22 34L10 62"/><path d="M22 34l12 28"/><path d="M8 62c0 9 28 9 28 0"/><path d="M98 34L86 62"/><path d="M98 34l12 28"/><path d="M84 62c0 9 28 9 28 0"/>',
+      quote:'<path d="M28 16h52l12 14v74H28z"/><path d="M80 16v14h12"/><path d="M46 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M68 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M40 86h40"/>',
+      megaphone:'<path d="M22 50v20h14l42 24V26L36 50z"/><path d="M36 70l6 24h11l-4-22"/><path d="M90 44l14-6"/><path d="M92 60h16"/><path d="M90 76l14 6"/>',
+      brush:'<path d="M88 14L52 62"/><path d="M46 58l12 9"/><path d="M46 60c-10 2-18 10-20 22-2 8-8 12-14 14 14 4 30 2 38-8 6-8 6-16 6-20"/><path d="M20 106c22-8 52-4 84-10"/>',
+      mic:'<path d="M48 18h24v42c0 7-5 12-12 12s-12-5-12-12z"/><path d="M48 32h24"/><path d="M48 44h24"/><path d="M36 52c0 15 11 27 24 27s24-12 24-27"/><path d="M60 79v17"/><path d="M42 98h36"/>',
+      magnet:'<path d="M28 28v36c0 18 14 32 32 32s32-14 32-32V28H72v36c0 7-5 12-12 12s-12-5-12-12V28z"/><path d="M28 44h20"/><path d="M72 44h20"/><path d="M14 18l8 8"/><path d="M106 16l-8 9"/><path d="M60 6v12"/>',
+      gauge:'<path d="M18 86a42 42 0 0 1 84 0"/><path d="M27 66l7 4"/><path d="M42 50l5 6"/><path d="M60 44v9"/><path d="M78 50l-5 6"/><path d="M93 66l-7 4"/><path d="M60 86L86 56"/><circle cx="60" cy="86" r="5"/><path d="M12 96c32-3 64-3 96 0"/>',
+      capsule:'<path d="M34 76l30-30c8-8 20-8 28 0s8 20 0 28L62 104c-8 8-20 8-28 0s-8-20 0-28z"/><path d="M49 61l28 28"/><path d="M16 46c6-20 26-28 42-22-2 16-18 30-42 22z"/><path d="M16 46c12-6 22-12 32-20"/>',
+      link:'<path d="M52 46c-8-8-22-8-30 2s-6 24 4 30l8 6c10 6 22 2 28-6"/><path d="M68 74c8 8 22 8 30-2s6-24-4-30l-8-6c-10-6-22-2-28 6"/><path d="M46 66l28-12"/>',
+      trophy:'<path d="M38 20h44v26c0 14-10 24-22 24S38 60 38 46z"/><path d="M38 30H24c0 14 6 22 16 24"/><path d="M82 30h14c0 14-6 22-16 24"/><path d="M60 70v16"/><path d="M44 100c2-8 8-14 16-14s14 6 16 14z"/><path d="M54 34l4 6 6-10"/>',
+      flow:'<path d="M16 22h30v22H16z"/><path d="M74 22h30v22H74z"/><path d="M45 80h30v22H45z"/><path d="M46 33c10-2 18-2 26 0"/><path d="M66 29l6 4-6 4"/><path d="M89 44c0 16-6 26-14 36"/><path d="M74 72l1 8 7-3"/><path d="M45 91c-16 0-28-14-30-44"/><path d="M10 52l5-6 5 6"/>',
+      sprout:'<path d="M36 78h48l-6 26H42z"/><path d="M30 70c20-2 40-2 60 0v8H30z"/><path d="M60 70V38"/><path d="M60 50c-4-14-18-20-30-16 2 12 16 20 30 16z"/><path d="M60 40c4-14 18-22 32-18-2 12-18 22-32 18z"/>'
+    };
+    const WASH = '<path d="M28 40c12-18 52-22 66-4s10 52-12 60-50 4-58-14-8-26 4-42z"/>';
+    const GROUND = '<path d="M26 110c22 4 46 4 68 0"/>';
+
+
+  // Strategy as a pipeline graph: priorities (nodes) flow into Attention, Trust and Pipeline hubs
+  (function(){
+    const svg = document.getElementById('pipe-svg');
+    if (!svg) return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const STAGES = [
+      { x1:16, x2:332, wash:'#fb9a74', name:'1 · Earn attention', frame:'First 30–60 days', q:'How can we make ourselves known in key verticals like finance and pharma?' },
+      { x1:342, x2:658, wash:'#8fd6f7', name:'2 · Build trust', frame:'First 90 days', q:'How can we convince our ideal customers to trust us?' },
+      { x1:668, x2:984, wash:'#ffd36b', name:'3 · Win business', frame:'First 180 days', q:'How can we convert?' }
+    ];
+    const N = [
+      // Stage 1: earn attention
+      { id:'ai', s:0, x:105, y:110, art:'magnifier', label:['AI search rank'], title:'Review our rank in AI search', desc:'Track 25 questions buyers ask ChatGPT, Claude and Perplexity, such as "verified company data for KYC agents", and see where Cala is mentioned or cited.' },
+      { id:'pr', s:0, x:105, y:195, art:'megaphone', label:['PR publications'], title:'Apply for PR publications', desc:'Pitch fintech, AI and data trade press, plus founder bylines and podcasts.' },
+      { id:'cc', s:0, x:105, y:280, art:'envelope', label:['Content calendar'], title:'Content calendar to activate all key channels', desc:'One calendar across social (company and founders), paid, newsletter and email. Paid goes live once the message is tested.' },
+      { id:'ev', s:0, x:105, y:365, art:'mic', label:['Events & webinars'], title:'Host events, webinars and conferences', desc:'Our own webinar series, plus speaking at finance and AI-engineering events. Pair an engineer and a compliance lead so both audiences attend.' },
+      { id:'inf', s:0, x:105, y:450, art:'people', label:['Influencers'], title:'Influencer marketing', desc:'AI builders on YouTube, X and LinkedIn for engineers; fintech newsletters and analysts for business buyers.' },
+      { id:'h1', s:0, x:262, y:280, hub:true, art:'target', label:['Attention'], title:'Attention', desc:'Target accounts know who Cala is and what it does. Measured at 30–60 days.',
+        metrics:['AI search visibility: share of tracked questions where Cala is mentioned or cited','Press placements and bylines landed','LinkedIn reach and followers from target accounts','Website visits from target accounts','Free-tier sign-ups with a company email address','Newsletter subscribers'] },
+      // Stage 2: build trust
+      { id:'cs', s:1, x:428, y:175, art:'quote', label:['Case studies,','papers & blogs'], title:'Case studies, white papers and industry blogs', desc:'Customer stories from teams already in production, a provenance white paper for data leaders, the real cost of building in-house for engineering leaders, a benchmark with published methodology, and blogs on KYC, AML and due diligence.' },
+      { id:'pa', s:1, x:428, y:280, art:'link', label:['Partnerships'], title:'Partnerships rollout', desc:'Co-marketing with integration partners (n8n, LangChain, MCP clients), and first conversations with consultancies and systems integrators that build AI for banks.' },
+      { id:'cw', s:1, x:428, y:385, art:'trophy', label:['Customer wins'], title:'Customer wins', desc:'Each win becomes a news post, a LinkedIn moment and a sales email, with the customer\'s approval.' },
+      { id:'h2', s:1, x:588, y:280, hub:true, art:'quote', label:['Trust'], title:'Trust', desc:'The buying committee believes Cala can deliver: engineers, data leaders and business owners. Measured at 90 days.',
+        metrics:['Proof assets live: for example 2 case studies, 1 white paper, 1 benchmark','Target accounts engaged, and how many of the three buying roles are engaged in each','Free-tier activation: sign-ups who connect through MCP or the API and keep querying','Marketing content used by sales in live deals','MQL to SQL conversion rate'] },
+      // Stage 3: win business
+      { id:'lg', s:2, x:752, y:130, art:'magnet', label:['Lead-gen tool'], title:'Develop a lead-gen workshop or tool', desc:'For example, an instant sourced KYC profile of any company, built on Cala itself. It shows the product and captures the lead in one step. Or a hands-on "build a KYC agent" workshop.' },
+      { id:'nu', s:2, x:752, y:230, art:'flow', label:['Nurture workflows'], title:'Design workflows for lead nurturing and follow-ups', desc:'Sequences for each role, triggered by product use and content engagement.' },
+      { id:'abm', s:2, x:752, y:330, art:'bubbles', label:['ABM messaging'], title:'Support ABM messaging', desc:'With sales, for engineers and data teams, and for decision-makers: CDOs, heads of data and innovation leads.' },
+      { id:'ls', s:2, x:752, y:430, art:'gauge', label:['Lead scoring'], title:'Develop a lead scoring model', desc:'Fit (target account, role) plus intent (product use, pricing page visits, webinars, content).' },
+      { id:'h3', s:2, x:912, y:280, hub:true, art:'sprout', label:['Pipeline'], title:'Pipeline', desc:'Opportunities sales can close. Measured at 180 days: this is what the CEO and sales will judge marketing on.',
+        metrics:['Pipeline sourced and influenced by marketing (€), and number of opportunities','Free-tier to enterprise conversions','Win rate and sales-cycle length for accounts marketing engaged, compared with those it didn\'t','Share of high-scoring leads that sales accepts','Leads generated, as an early signal'] }
+    ];
+    const byId = Object.fromEntries(N.map(n => [n.id, n]));
+    const E = [];
+    const link = (a,b) => E.push([a,b]);
+    ['ai','pr','cc','ev','inf'].forEach(id => link(id,'h1'));
+    ['cs','pa','cw'].forEach(id => { link('h1',id); link(id,'h2'); });
+    ['lg','nu','abm','ls'].forEach(id => { link('h2',id); link(id,'h3'); });
+
+    const el = (tag, attrs, parent) => {
+      const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    };
+
+    // Stage bands with headers
+    STAGES.forEach((st,i) => {
+      const g = el('g', { class:'pipe-band' }, svg);
+      el('rect', { x:st.x1, y:8, width:st.x2 - st.x1, height:504, rx:26, fill:st.wash, class:'pipe-band-fill' }, g);
+      const t = el('text', { x:(st.x1 + st.x2) / 2, y:40, class:'pipe-band-name', 'text-anchor':'middle' }, g); t.textContent = st.name;
+      const f = el('text', { x:(st.x1 + st.x2) / 2, y:60, class:'pipe-band-frame', 'text-anchor':'middle' }, g); f.textContent = st.frame;
+    });
+
+    // Edges: a hand-drawn base line plus a flowing dashed layer
+    const edgeLayer = el('g', {}, svg);
+    const edges = E.map(([a,b]) => {
+      const A = byId[a], B = byId[b];
+      const x1 = A.x + (A.hub ? 46 : 30), x2 = B.x - (B.hub ? 46 : 30), mx = (x1 + x2) / 2;
+      const d = 'M' + x1 + ' ' + A.y + ' C' + mx + ' ' + A.y + ' ' + mx + ' ' + B.y + ' ' + x2 + ' ' + B.y;
+      const g = el('g', { class:'pipe-edge' }, edgeLayer);
+      el('path', { d, class:'pipe-edge-ink' }, g);
+      el('path', { d, class:'pipe-edge-flow' }, g);
+      return { a, b, g };
+    });
+
+    // Nodes
+    const nodeLayer = el('g', {}, svg);
+    const nodes = N.map(n => {
+      const r = n.hub ? 46 : 30;
+      const g = el('g', { class:'pipe-node' + (n.hub ? ' is-hub' : ''), tabindex:0, role:'button', 'aria-label':n.title }, nodeLayer);
+      if (n.hub){
+        el('path', { d:'M28 40c12-18 52-22 66-4s10 52-12 60-50 4-58-14-8-26 4-42z', fill:STAGES[n.s].wash, class:'pipe-hub-wash',
+          transform:'translate(' + (n.x - 66) + ' ' + (n.y - 66) + ') scale(1.1)' }, g);
+      }
+      el('circle', { cx:n.x, cy:n.y, r, class:'pipe-node-ring' }, g);
+      const s = n.hub ? .5 : .38, off = 60 * s;
+      const art = el('g', { class:'pipe-node-art', transform:'translate(' + (n.x - off) + ' ' + (n.y - off) + ') scale(' + s + ')' }, g);
+      art.innerHTML = ART[n.art];
+      if (n.hub){
+        const t = el('text', { x:n.x, y:n.y + r + 22, class:'pipe-hub-label', 'text-anchor':'middle' }, g); t.textContent = n.label[0];
+      } else {
+        n.label.forEach((line,i) => {
+          const t = el('text', { x:n.x, y:n.y + r + 18 + i * 15, class:'pipe-node-label', 'text-anchor':'middle' }, g); t.textContent = line;
+        });
+      }
+      g.addEventListener('click', () => select(n.id));
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(n.id); } });
+      return { n, g };
+    });
+
+    const $ = id => document.getElementById(id);
+    function select(id){
+      const n = byId[id], st = STAGES[n.s];
+      nodes.forEach(o => o.g.classList.toggle('is-active', o.n.id === id));
+      const linked = new Set([id]);
+      edges.forEach(e => {
+        const on = e.a === id || e.b === id;
+        e.g.classList.toggle('is-on', on);
+        if (on){ linked.add(e.a); linked.add(e.b); }
+      });
+      nodes.forEach(o => o.g.classList.toggle('is-dim', !linked.has(o.n.id)));
+      edges.forEach(e => e.g.classList.toggle('is-dim', !(e.a === id || e.b === id)));
+
+      $('pipe-art').innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true"><g class="wash" fill="' + st.wash + '">' + WASH + '</g>' +
+        '<g class="smudge" transform="translate(3 4)">' + ART[n.art] + GROUND + '</g><g class="ink">' + ART[n.art] + '</g></svg>';
+      $('pipe-stage').textContent = st.name + ' · ' + st.frame + (n.hub ? ' · Metrics' : '');
+      $('pipe-title').textContent = n.hub ? n.title + ': ' + st.q : n.title;
+      $('pipe-desc').textContent = n.desc;
+      const m = $('pipe-metrics');
+      m.innerHTML = '';
+      (n.metrics || []).forEach(x => { const li = document.createElement('li'); li.textContent = x; m.appendChild(li); });
+      m.style.display = n.metrics ? '' : 'none';
+    }
+    select('h1');
+  })();
+
   // Wrap tables so wide ones scroll horizontally instead of overflowing the page
   document.querySelectorAll('table').forEach(t => {
     const wrap = document.createElement('div');
@@ -847,32 +969,6 @@
 
   // Priorities: time-frame tabs, a split view (objective | to-do list) and hand-drawn art. Ticks are saved per viewer.
   (function(){
-    const ART = {
-      phone:'<path d="M34 34c-8 4-10 14-6 24 6 16 18 30 34 38 10 4 18 2 22-6L72 78c-3-2-6-2-8 1l-4 4c-10-5-17-13-21-22l4-4c3-2 3-6 1-8L38 34c-1-1-3-1-4 0z"/><path d="M70 34c8 2 14 8 16 16"/><path d="M72 20c14 3 25 14 28 28"/>',
-      people:'<circle cx="36" cy="46" r="10"/><circle cx="60" cy="38" r="12"/><circle cx="84" cy="46" r="10"/><path d="M20 84c0-14 7-22 16-22s14 6 15 12"/><path d="M40 88c0-18 8-30 20-30s20 12 20 30"/><path d="M69 74c1-6 6-12 15-12s16 8 16 22"/>',
-      bubbles:'<path d="M20 28h50c6 0 10 4 10 10v20c0 6-4 10-10 10H44L30 80l2-12h-12c-6 0-10-4-10-10V38c0-6 4-10 10-10z"/><path d="M26 44h36"/><path d="M26 54h22"/><path d="M86 52h12c6 0 10 4 10 10v16c0 6-4 10-10 10h-6l2 10-12-10H72c-6 0-10-4-10-10v-4"/>',
-      magnifier:'<circle cx="52" cy="50" r="25"/><path d="M71 69l27 27"/><path d="M40 40c4-5 10-6 15-4"/><path d="M94 18v14M87 25h14"/>',
-      chart:'<path d="M20 18v80h82"/><path d="M34 98V76h10v22"/><path d="M54 98V64h10v34"/><path d="M74 98V50h10v48"/><path d="M28 64c12-6 20-14 30-20s16-8 24-18 10-8 16-10"/><path d="M90 14l9 1-2 9"/>',
-      target:'<circle cx="56" cy="64" r="36"/><circle cx="56" cy="64" r="23"/><circle cx="56" cy="64" r="10"/><path d="M56 64L98 22"/><path d="M90 16l8 6 4 8"/><path d="M98 22l2-10 8 2"/>',
-      envelope:'<path d="M16 36c28-2 58-2 88 0 1 18 1 36 0 52-28 2-58 2-88 0-1-18-1-34 0-52z"/><path d="M16 36l44 30 44-30"/><path d="M16 88l30-24"/><path d="M104 88L74 64"/>',
-      papers:'<path d="M22 32v72h50"/><path d="M30 22h44l16 16v58H30z"/><path d="M74 22v16h16"/><path d="M40 52h38"/><path d="M40 62h38"/><path d="M40 72h26"/>',
-      pins:'<path d="M40 26c-10 0-18 8-18 18 0 14 18 32 18 32s18-18 18-32c0-10-8-18-18-18z"/><circle cx="40" cy="44" r="6"/><path d="M82 42c-8 0-14 6-14 14 0 11 14 25 14 25s14-14 14-25c0-8-6-14-14-14z"/><circle cx="82" cy="56" r="4"/><path d="M12 98c20-6 40 4 60-2s30-4 36 0"/><path d="M44 84c10 6 22 4 32-2" stroke-dasharray="3 6"/>',
-      scale:'<circle cx="60" cy="20" r="4"/><path d="M60 24v72"/><path d="M40 98h40"/><path d="M22 34c26-3 50-3 76 0"/><path d="M22 34L10 62"/><path d="M22 34l12 28"/><path d="M8 62c0 9 28 9 28 0"/><path d="M98 34L86 62"/><path d="M98 34l12 28"/><path d="M84 62c0 9 28 9 28 0"/>',
-      quote:'<path d="M28 16h52l12 14v74H28z"/><path d="M80 16v14h12"/><path d="M46 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M68 44c-5 0-8 3-8 8s3 7 8 7c0 7-3 10-7 12"/><path d="M40 86h40"/>',
-      megaphone:'<path d="M22 50v20h14l42 24V26L36 50z"/><path d="M36 70l6 24h11l-4-22"/><path d="M90 44l14-6"/><path d="M92 60h16"/><path d="M90 76l14 6"/>',
-      brush:'<path d="M88 14L52 62"/><path d="M46 58l12 9"/><path d="M46 60c-10 2-18 10-20 22-2 8-8 12-14 14 14 4 30 2 38-8 6-8 6-16 6-20"/><path d="M20 106c22-8 52-4 84-10"/>',
-      mic:'<path d="M48 18h24v42c0 7-5 12-12 12s-12-5-12-12z"/><path d="M48 32h24"/><path d="M48 44h24"/><path d="M36 52c0 15 11 27 24 27s24-12 24-27"/><path d="M60 79v17"/><path d="M42 98h36"/>',
-      magnet:'<path d="M28 28v36c0 18 14 32 32 32s32-14 32-32V28H72v36c0 7-5 12-12 12s-12-5-12-12V28z"/><path d="M28 44h20"/><path d="M72 44h20"/><path d="M14 18l8 8"/><path d="M106 16l-8 9"/><path d="M60 6v12"/>',
-      gauge:'<path d="M18 86a42 42 0 0 1 84 0"/><path d="M27 66l7 4"/><path d="M42 50l5 6"/><path d="M60 44v9"/><path d="M78 50l-5 6"/><path d="M93 66l-7 4"/><path d="M60 86L86 56"/><circle cx="60" cy="86" r="5"/><path d="M12 96c32-3 64-3 96 0"/>',
-      capsule:'<path d="M34 76l30-30c8-8 20-8 28 0s8 20 0 28L62 104c-8 8-20 8-28 0s-8-20 0-28z"/><path d="M49 61l28 28"/><path d="M16 46c6-20 26-28 42-22-2 16-18 30-42 22z"/><path d="M16 46c12-6 22-12 32-20"/>',
-      link:'<path d="M52 46c-8-8-22-8-30 2s-6 24 4 30l8 6c10 6 22 2 28-6"/><path d="M68 74c8 8 22 8 30-2s6-24-4-30l-8-6c-10-6-22-2-28 6"/><path d="M46 66l28-12"/>',
-      trophy:'<path d="M38 20h44v26c0 14-10 24-22 24S38 60 38 46z"/><path d="M38 30H24c0 14 6 22 16 24"/><path d="M82 30h14c0 14-6 22-16 24"/><path d="M60 70v16"/><path d="M44 100c2-8 8-14 16-14s14 6 16 14z"/><path d="M54 34l4 6 6-10"/>',
-      flow:'<path d="M16 22h30v22H16z"/><path d="M74 22h30v22H74z"/><path d="M45 80h30v22H45z"/><path d="M46 33c10-2 18-2 26 0"/><path d="M66 29l6 4-6 4"/><path d="M89 44c0 16-6 26-14 36"/><path d="M74 72l1 8 7-3"/><path d="M45 91c-16 0-28-14-30-44"/><path d="M10 52l5-6 5 6"/>',
-      sprout:'<path d="M36 78h48l-6 26H42z"/><path d="M30 70c20-2 40-2 60 0v8H30z"/><path d="M60 70V38"/><path d="M60 50c-4-14-18-20-30-16 2 12 16 20 30 16z"/><path d="M60 40c4-14 18-22 32-18-2 12-18 22-32 18z"/>'
-    };
-    const WASH = '<path d="M28 40c12-18 52-22 66-4s10 52-12 60-50 4-58-14-8-26 4-42z"/>';
-    const GROUND = '<path d="M26 110c22 4 46 4 68 0"/>';
-
     const WASHES = { attention:'#fb9a74', trust:'#8fd6f7', business:'#ffd36b' };
 
     const PHASES = [
@@ -1005,11 +1101,14 @@
 
     setPhase(0);
 
-    // The calendar is wider than the text column, so fade the floating TOC while it's on screen
+    // The graph and the priorities view are wider than the text column, so fade the floating TOC while either is on screen
     const toc = document.getElementById('toc-panel');
-    new IntersectionObserver(entries => {
-      entries.forEach(en => toc.classList.toggle('tk-hide', en.isIntersecting));
-    }, { threshold: 0.15 }).observe(document.getElementById('tracker'));
+    const wide = new Set();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => en.isIntersecting ? wide.add(en.target) : wide.delete(en.target));
+      toc.classList.toggle('tk-hide', wide.size > 0);
+    }, { threshold: 0.15 });
+    ['tracker','pipe'].forEach(id => io.observe(document.getElementById(id)));
   })();
 </script>
 
